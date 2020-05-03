@@ -44,21 +44,27 @@ class Album:
     def __len__(self):
         return len(self.container)
 
-    def add_artwork(self, art_inst=Artwork):
+    def __getitem__(self, item):
+        return self.container[item]
+
+    def append(self, art_inst=Artwork):
         self.container.append(art_inst)
 
     def remove_at(self, index):
         self.container.pop(index)
 
+    def pop(self, index):
+        return self.container.pop(index)
+
     def rename(self, new_name):
         self.title = new_name
 
-    def move(self, index, album_inst):
-        album_inst.add_artwork(self.container.pop(index))
+    # def move(self, index, album_inst):
+    #     album_inst.add_artwork(self.container.pop(index))
 
     @content_show
     def show_album(self):
         return self.container
 
     def to_dict(self):
-        return {"name": self.title, "pics": [item.to_dict for item in self.container]}
+        return {"name": self.title, "pics": [item.to_dict() for item in self.container]}
