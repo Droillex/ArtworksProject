@@ -1,0 +1,130 @@
+
+.grid > div {
+    font-size: 5vw;
+  }
+
+
+body
+{
+  background-color:#232323;
+}
+
+div [class^="item"]{
+    padding-left: 18%;
+    padding-right:18%;
+
+}
+
+div [class^="loading"]{
+    width:30%;
+
+}
+
+.container, .container-l {
+	pointer-events: auto;
+	clip-path: polygon(25% 6.25%, 0% 50%, 25% 93.75%, 75% 93.75%, 100% 50%, 75% 6.25%);
+	transition: clip-path .2s ease-out, z-index .2s ease-out;
+	position: relative;
+  z-index: 0;
+}
+
+
+.container:hover
+{
+	clip-path: polygon(0% 0%, 0% 50%, 0% 100%, 100% 100%, 100% 50%, 100% 0%);
+  position: relative;
+  z-index: 1;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+
+.ov_one {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 1;
+  height: 50%;
+  width: 100%;
+  mix-blend-mode: color-dodge;
+  transition: opacity .2s ease-out, clip-path .2s ease-out;
+  transform: scaleY(-1);
+  background-color: #222222;
+}
+
+.ov_two {
+  	position: absolute;
+  	top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 1;
+    transform: scaleY(-1);
+    clip-path: polygon(0% 0%, 0% 100%, 78.8% 100%, 21.4% 0%);
+    transition: opacity .2s ease-out, clip-path .2s ease-out;
+    mix-blend-mode: multiply;
+    background-color: #cccccc;
+}
+
+
+.ov_three {
+  	position: absolute;
+  	top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 1;
+    transition: opacity .2s ease-out, clip-path .2s ease-out;
+    clip-path: polygon(0% 0%, 0% 100%, 78.8% 100%, 21.4% 0%);
+    mix-blend-mode: color-dodge;
+    background-color: #222222;
+}
+
+
+.container:hover .ov_one 
+{
+  opacity: 0;
+}
+.container:hover .ov_two 
+{
+  clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%);
+  opacity: 0;
+}
+.container:hover .ov_three 
+{
+  opacity: 0;
+  clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 0% 0%);
+}
+
+
+div [class^="loading"]{
+  width: 32%;
+  animation: rotate 1.5s infinite;
+}
+
+.img_wrap img
+{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
