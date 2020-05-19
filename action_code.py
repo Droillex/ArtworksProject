@@ -1,7 +1,7 @@
 import pymongo
 from arts import *
 import const
-
+from html_templates import *
 cStr = const.cStr
 
 
@@ -23,6 +23,28 @@ def add_user(username, password):
     else:
         print("Username already exists")
     client.close()
+
+
+def get_user(username, password):
+    client = db_conn(cStr)
+    users = client["test_db"]["users"]
+    data = users.find_one({"_id": username, "password": password})
+    client.close()
+    if data is None:
+        return 0
+    else:
+        return 1
+
+
+def get_user_albums(username):
+    client = db_conn(cStr)
+    users = client["test_db"]["users"]
+    data = users.find_one({"_id": username}, {"albums": 1, "_id": 0})['albums']
+    markup = ""
+#    for album in data:
+#        pass
+    client.close()
+    return '<div style="display: inline-flex;">{}</div>'.format(markup)
 
 
 def get_album(username, album_name):
@@ -141,6 +163,4 @@ def move_picture(username, from_album, to_album, pic_index):
 #     ]}
 
 #add_pic("test1", "sample one", pic)
-
 # move_picture("test1", "sample one", "test_album", 3)
-

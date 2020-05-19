@@ -24,7 +24,7 @@ function getCells(rows, columns, starts_at) {
 
 //Sets Grid and Horizontal position styles
 function setColumnStyles() {
-    let wdth = Math.round(86.0 / clm / 1.36);
+    let wdth = Math.round(84.0 / clm / 1.36);
     $('head').append($('<style type="text/css"></style>'));
     $('style').append(`.grid{\ndisplay: grid;\ngrid-template-rows: repeat(100%, 1fr);\ngrid-template-columns: repeat(${clm*2}, 1fr);\njustify-items: center;\nalign-items: center;}`);
     $('style').append(`.img_wrap{\nwidth:${wdth}vw;\nheight:${wdth}vw;\n}`);
@@ -45,23 +45,22 @@ function setCells(dat, rows, st) {
 
     var pics = dat['data'];
     //console.log(pics.length);
-    var idx = 0;
+    let idxs = [0,0]
     for (i = st - 1; i < st - 1 + rows; i++) {
         let nm = `row${i+1}`;
         $('style').append(`\n.${nm}{\ngrid-row:${i + 1}/${i + 3};\n}`);
         let cls = Math.round((i + 1) % 2);
         let typ = ["even", "odd"];
-
         for (j = 0; j < clm - 1 + cls; j++) {
-            let $content = $("<a>", { "href": `${pics[idx]['link']}` });
-            let $img_wrap = $("<div>", { "class": "img_wrap" }).append($("<img>", { "class": "image", "src": `${pics[idx]['img_url']}` }));
+            let $content = $("<a>", { "href": `${pics[cls][idxs[cls]]['link']}` });
+            let $img_wrap = $("<div>", { "class": "img_wrap" }).append($("<img>", { "class": "image", "src": `${pics[cls][idxs[cls]]['img_url']}` }));
             $content.append($img_wrap);
             $content.append($("<div>", { "class": "ov_one" }));
             $content.append($("<div>", { "class": "ov_two" }));
             $content.append($("<div>", { "class": "ov_three" }));
-            let $load = $("<div>", { "class": `item row${i+1} column${j+1}${typ[cls]}` }).append($("<div>", { "class": "container", "title": `${pics[idx]['title']}` }).append($content));
+            let $load = $("<div>", { "class": `item row${i+1} column${j+1}${typ[cls]}` }).append($("<div>", { "class": "container", "title": `${pics[cls][idxs[cls]]['title']}` }).append($content));
             $('.grid').append($load);
-            idx += 1;
+            idxs[cls] += 1;
         }
     }
 }
