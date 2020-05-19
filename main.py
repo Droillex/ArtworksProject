@@ -4,7 +4,6 @@ import string
 import random
 from action_code import get_user, get_user_albums
 import const
-from html_templates import *
 from parse_page import parse_page, get_rating, read_json_part
 import math
 import json

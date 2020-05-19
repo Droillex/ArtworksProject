@@ -98,7 +98,7 @@ function handleBlanks(type) {
 function bodyScroll() {
     let windowRelativeBottom = document.documentElement.getBoundingClientRect().bottom;
     if (windowRelativeBottom <= document.documentElement.clientHeight + 180 && bottom_hit == false) {
-        getRows(6);
+        getRows(8);
         handleBlanks('add');
     }
 

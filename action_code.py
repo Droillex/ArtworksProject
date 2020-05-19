@@ -1,7 +1,6 @@
 import pymongo
 from arts import *
 import const
-from html_templates import *
 cStr = const.cStr
 
 
