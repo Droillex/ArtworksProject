@@ -115,7 +115,26 @@ def cgsociety_collect(btm=1, top=235, json_url='', pages=0, op=''):
 
 # Returns part of JSON file
 def read_json_part(path, start=0, end=0):
-    return json.loads(open(path).read())[start:end]
+    data = json.loads(open(path).read())[start:end]
+    if path.split('/')[-1][:2] != 'CG':
+        for item in data:
+            item['link'] = '/artwork?id={}'.format(item['link'][8:].split('/')[-1])
+    else:
+        for item in data:
+            item['link'] = '/artwork?id={}'.format(item['link'][8:].split('/')[-2])
+    return data
+
+
+
+def handle_artwork(artwork_id):
+    #Найти нужные данные и отпавить json
+    if len(artwork_id) == 4:
+        r = requests.get('https://cgsociety.org/api/images/{}?user_details=true'.format(artwork_id))
+        res = json.loads(r.text)
+    else:
+        r = requests.get('https://artstation.com/projects/{}.json'.format(artwork_id))
+        res = json.loads(r.text)
+    return res
 
 
 
@@ -204,10 +223,10 @@ def get_rating():
     start = time.time()
     cgs_urls = parse_page('https://cgsociety.org/api/channels/recent/images?category=&channel_slug=recent&genre'
                           '=&per_page=20')
-    with open('static/index/trendingCGS.json', 'w') as fp:
+    with open('static/index/CGtrending.json', 'w') as fp:
         json.dump(cgs_urls, fp)
     as_urls = parse_page('https://artstation.com/projects?sorting=trending', rng=50)
-    with open('static/index/trendingAS.json', 'w') as fp:
+    with open('static/index/AStrending.json', 'w') as fp:
         json.dump(as_urls, fp)
     end = time.time()
     #print(end-start)

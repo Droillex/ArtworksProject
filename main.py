@@ -4,9 +4,10 @@ import string
 import random
 from action_code import get_user, get_user_albums
 import const
-from parse_page import parse_page, get_rating, read_json_part
+from parse_page import parse_page, get_rating, read_json_part, handle_artwork
 import math
 import json
+
 
 import atexit
 import apscheduler
@@ -61,6 +62,14 @@ def logout():
     session.pop("user", None)
     return redirect(url_for("login_page"))
 
+#return artwork
+@app.route('/artwork')
+def artworks_page():
+    artwork_id = str(request.args.get('id'))
+    return handle_artwork(artwork_id)
+
+
+
 
 #Some math
 @app.route('/api/cells')
@@ -86,8 +95,8 @@ def get_cells():
     # print('add evens; indexes from {} to {}'.format(start_point_even, start_point_even+even_count))
 
     result = [
-        read_json_part('static/index/trendingCGS.json', start=start_point_even, end=start_point_even + even_count),
-        read_json_part('static/index/trendingAS.json', start=start_point_odd, end=start_point_odd + odd_count)]
+        read_json_part('static/index/CGtrending.json', start=start_point_even, end=start_point_even + even_count),
+        read_json_part('static/index/AStrending.json', start=start_point_odd, end=start_point_odd + odd_count)]
 
     return jsonify({'data': result})
 
