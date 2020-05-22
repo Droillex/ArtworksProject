@@ -115,8 +115,8 @@ function bodyScroll() {
 
 function defineRes()
 {
-    clm = Math.max(2, Math.round(window.screen.width / 400));
-    clm = Math.min(5, clm);
+    clm = Math.max(2, Math.round(window.screen.width / 240));
+    clm = Math.min(6, clm);
     setColumnStyles();
 }
 
