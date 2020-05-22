@@ -77,26 +77,22 @@ def get_cells():
     columns = int(request.args.get('columns'))
     rows = int(request.args.get('rows'))
     st = int(request.args.get('starts_at'))
+    count = [int(x) for x in request.args.get('cnt').split(',')]
     if st % 2 == 0:
         even_rows = math.ceil(rows / 2)
         even_count = (columns - 1) * even_rows
         odd_count = columns * (rows - even_rows)
-        odd_rows1 = math.ceil((st - 1) / 2)
-        even_rows1 = (st - 1) - odd_rows
-        start_point_odd = columns * odd_rows1
-        start_point_even = (columns - 1) * even_rows1
     else:
         odd_rows = math.ceil(rows / 2)
         odd_count = columns * odd_rows
         even_count = (columns - 1) * (rows - odd_rows)
-        start_point_odd = ((st - 1) // 2) * columns
-        start_point_even = ((st - 1) // 2) * (columns - 1)
+
     # print('add odds; indexes from {} to {}'.format(start_point_odd, start_point_odd+odd_count))
     # print('add evens; indexes from {} to {}'.format(start_point_even, start_point_even+even_count))
 
     result = [
-        read_json_part('static/index/CGtrending.json', start=start_point_even, end=start_point_even + even_count),
-        read_json_part('static/index/AStrending.json', start=start_point_odd, end=start_point_odd + odd_count)]
+        read_json_part('static/index/CGtrending.json', start=count[0], end=count[0] + even_count),
+        read_json_part('static/index/AStrending.json', start=count[1], end=count[1] + odd_count)]
 
     return jsonify({'data': result})
 
@@ -109,6 +105,6 @@ scheduler.start()
 # Removing this task at exit
 atexit.register(lambda: scheduler.shutdown())
 
-# get_rating()
+#get_rating()
 
 #app.run()

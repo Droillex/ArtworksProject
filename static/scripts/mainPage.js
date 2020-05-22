@@ -1,18 +1,21 @@
 var bottom_hit = false;
-const clm = 5;
+let bottom_offset = 150;
+let count = [0,0]
+let clm = 5;
 var starter = 1;
-setColumnStyles();
-getRows(8);
+window.onorientationchange = redefineCells;
+defineRes();
+getRows(2);
 
 
 function getRows(rows) {
     bottom_hit = true;
-    getCells(rows, clm, starter);
+    getCells(rows, clm, starter, count);
 }
 
-function getCells(rows, columns, starts_at) {
+function getCells(rows, columns, starts_at, cnt) {
 
-    fetch('/api/cells?rows=' + rows + '&columns=' + columns + '&starts_at=' + starts_at)
+    fetch(`/api/cells?rows=${rows}&columns=${columns}&starts_at=${starts_at}&cnt=${cnt}`)
         .then(res => res.json())
         .then(data => {
             starter += rows;
@@ -25,6 +28,7 @@ function getCells(rows, columns, starts_at) {
 //Sets Grid and Horizontal position styles
 function setColumnStyles() {
     let wdth = Math.round(84.0 / clm / 1.36);
+    $("style").remove();
     $('head').append($('<style type="text/css"></style>'));
     $('style').append(`.grid{\ndisplay: grid;\ngrid-template-rows: repeat(100%, 1fr);\ngrid-template-columns: repeat(${clm*2}, 1fr);\njustify-items: center;\nalign-items: center;}`);
     $('style').append(`.img_wrap{\nwidth:${wdth}vw;\nheight:${wdth}vw;\n}`);
@@ -60,8 +64,13 @@ function setCells(dat, rows, st) {
             $content.append($("<div>", { "class": "ov_three" }));
             let $load = $("<div>", { "class": `item row${i+1} column${j+1}${typ[cls]}` }).append($("<div>", { "class": "container", "title": `${pics[cls][idxs[cls]]['title']}` }).append($content));
             $('.grid').append($load);
+            count[cls] +=1;
             idxs[cls] += 1;
         }
+    }
+    if(document.documentElement.getBoundingClientRect().bottom <= window.innerHeight+bottom_offset)
+    {
+        getRows(1);
     }
 }
 
@@ -97,9 +106,58 @@ function handleBlanks(type) {
 
 function bodyScroll() {
     let windowRelativeBottom = document.documentElement.getBoundingClientRect().bottom;
-    if (windowRelativeBottom <= document.documentElement.clientHeight + 180 && bottom_hit == false) {
-        getRows(8);
+    if (windowRelativeBottom <= document.documentElement.clientHeight + bottom_offset && bottom_hit == false) {
+        getRows(3);
         handleBlanks('add');
     }
 
+}
+
+function defineRes()
+{
+    clm = Math.max(2, Math.round(window.screen.width / 400));
+    clm = Math.min(5, clm);
+    setColumnStyles();
+}
+
+
+function redefineCells()
+{
+    //console.log('Current orientation is ' + screen.orientation.type);
+    defineRes();
+    let $list = $(".item").toArray();
+    let frac = Math.floor($list.length / (2*clm-1));
+    if($list.length-(frac*(2*clm-1)) == clm)
+    {
+        starter = frac*2+2;
+    }
+    else
+    {
+        if($list.length-(frac*(2*clm-1)) > clm)
+        {
+            starter = frac*2+2;
+        }
+        else
+        {
+            starter = frac*2+1;
+        }
+        getRows(1);
+    }
+
+    $('.item').remove();
+
+    let idx = 0;
+
+    for (i = 0; i < starter-1; i++)
+    {
+        let nm = `row${i+1}`;
+        $('style').append(`\n.${nm}{\ngrid-row:${i + 1}/${i + 3};\n}`);
+        let cls = Math.round((i + 1) % 2);
+        let typ = ["even", "odd"];
+        for (j = 0; j < clm - 1 + cls; j++) {
+            $($list[idx]).attr('class', `item row${i+1} column${j+1}${typ[cls]}`);
+            idx += 1;
+        }
+    }
+    $('.grid').append($list.slice(0,idx));
 }
