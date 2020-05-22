@@ -27,10 +27,11 @@ function getCells(rows, columns, starts_at, cnt) {
 
 //Sets Grid and Horizontal position styles
 function setColumnStyles() {
-    let wdth = Math.round(84.0 / clm / 1.36);
+    let wdth = Math.round((100-clm*1.6) / clm / 1.36);
     $("style").remove();
     $('head').append($('<style type="text/css"></style>'));
-    $('style').append(`.grid{\ndisplay: grid;\ngrid-template-rows: repeat(100%, 1fr);\ngrid-template-columns: repeat(${clm*2}, 1fr);\njustify-items: center;\nalign-items: center;}`);
+    $('style').append(`.grid{\ndisplay: grid;\ngrid-template-columns: repeat(${clm*2}, ${25/clm}%);\njustify-items: center;\nalign-items: center;\ncolumn-gap:${50/(clm*2-1)}%;\n}`);
+    //column-gap: 36%;\n
     $('style').append(`.img_wrap{\nwidth:${wdth}vw;\nheight:${wdth}vw;\n}`);
     for (i = 0; i < clm; i++) {
         let nm = `column${i+1}odd`;
@@ -46,7 +47,6 @@ function setColumnStyles() {
 
 //Using json data sets all cels
 function setCells(dat, rows, st) {
-
     var pics = dat['data'];
     //console.log(pics.length);
     let idxs = [0,0]
@@ -117,6 +117,7 @@ function defineRes()
 {
     clm = Math.max(2, Math.round(window.screen.width / 240));
     clm = Math.min(6, clm);
+    console.log(clm);
     setColumnStyles();
 }
 
