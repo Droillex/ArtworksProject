@@ -1,6 +1,6 @@
 var bottom_hit = false;
 let bottom_offset = 150;
-let count = [0,0]
+let count = [0,0];
 let clm = 5;
 var starter = 1;
 window.onorientationchange = redefineCells;
