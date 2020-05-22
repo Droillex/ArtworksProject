@@ -15,7 +15,7 @@ function getRows(rows) {
 
 function getCells(rows, columns, starts_at, cnt) {
 
-    fetch(`/api/cells?rows=${rows}&columns=${columns}&starts_at=${starts_at}&cnt=${cnt}`)
+    fetch(`/api/cells?rows=${rows}&columns=${columns}&starts_at=${starts_at}&cnt=${cnt}&resolutionX=${window.screen.width}&resolutionY=${window.screen.height}`)
         .then(res => res.json())
         .then(data => {
             starter += rows;
