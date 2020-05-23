@@ -87,7 +87,6 @@ function handleBlanks(type) {
                 $contain.append($img);
                 $load.append($contain);
                 $load.attr("style", "grid-row:" + starter + "/" + (starter + 1) + ";grid-column: " + ((2 * i) + 2 - typ) + "/" + ((2 * i) + 4 - typ) + ";");
-                console.log($load)
                 $('.grid').append($load);
             }
             break;

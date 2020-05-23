@@ -1,13 +1,12 @@
 @font-face {
     font-family: 'Vox';
-    src: url(fonts/Vox.ttf);
+    src: url(../fonts/Vox.ttf);
 }
 
 body {
     margin: 0;
     background-color: #232323;
-    font-family: 'Vox', 'Righteous', cursive;
-    text-align: center;
+    font-family: 'Vox';
 }
 
 #album-body {
@@ -19,6 +18,10 @@ header {
     display: flex;
     justify-content: space-between;
     padding: 13px;
+    height: 29px;
+    //position: fixed;
+    //z-index: 2;
+    //width: 100vh;
 }
 
 .header_section {
@@ -39,20 +42,30 @@ header {
 
 .headerLogo {
     padding: 0 5px;
-    color: #94b2b9;
+    color: #d7d7d7;
     font-size: 30px;
-    text-transform: uppercase;
+    //text-transform: uppercase;
 }
 
 .logo:after {
+    font-size: 35px;
     content: "_";
-    color: #a2a2a2;
+    //color: #d7d7d7;
+    color: #94b2b9;
+}
+
+
+body {
+    background-color: #232323;
+    margin: 0;
+    text-align: center;
 }
 
 div [class^="item"] {
-    /* padding-left: 18%;
-    padding-right: 18%; */
+    //padding-left: 18%;
+    //padding-right: 18%;
 }
+
 
 .container,
 .container-l {
@@ -136,7 +149,7 @@ div [class^="item"] {
 }
 
 div [class^="loading"] {
-    width: 32%;
+    width: 45%;
     animation: rotate 1.5s infinite;
 }
 
@@ -154,6 +167,7 @@ div [class^="loading"] {
         transform: rotate(360deg);
     }
 }
+
 
 
 /*Albums*/
@@ -186,14 +200,6 @@ div[class^='albums_']::after {
     color: #a2a2a2;
 }
 
-.grid {
-    height: 100%;
-    display: grid;
-    grid-template-rows: repeat(6, 1fr);
-    grid-template-columns: repeat(5, 1fr);
-    justify-items: center;
-    align-items: center;
-}
 
 .grid-albums {
     height: 100%;
@@ -310,3 +316,4 @@ span::before {
         padding: 5px;
     }
 }
+

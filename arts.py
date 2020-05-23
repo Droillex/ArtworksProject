@@ -1,13 +1,18 @@
+import datetime
+
 class Artwork:
     def __init__(self, db_dict=None):
         if db_dict is None:
             db_dict = {'title': 'SampleTitle', 'author_name': 'SampleAuthor', 'author_link': 'Empty',
-                       'description': 'No', 'content': []}
+                       'author_logo': 'pics/no-pic.jpg', 'work_id': '00000', 'description': 'No', 'content': []}
 
         self.title = db_dict['title']
         self.author_name = db_dict['author_name']
         self.author_link = db_dict['author_link']
+        self.author_logo = db_dict['author_logo']
         self.description = db_dict['description']
+        self.id = db_dict['work_id']
+        self.add_date = datetime.datetime.utcnow()
         self.content = db_dict['content']
 
     def __str__(self):
@@ -19,8 +24,9 @@ class Artwork:
                                                                                                  .strip('[]'))
 
     def to_dict(self):
-        return {"title": self.title, "author_name": self.author_name, "author_link": self.author_link, "description":
-                self.description, "content": self.content}
+        return {"title": self.title, "author_name": self.author_name, "author_link": self.author_link,
+                "description": self.description, "author_logo": self.author_logo, "date": self.add_date,
+                "work_id": self.id, "content": self.content}
 
 
 def content_show(f):
@@ -34,12 +40,14 @@ def content_show(f):
 
 
 class Album:
-    def __init__(self, init_title="No title", content=[]):
-        self.title = init_title
+    def __init__(self, data=[]):
+        self.title = data['name']
         self.container = []
-        if len(content) > 0:
-            for work in content:
+        self.last_upload = 'None'
+        if len(data['pics']) > 0:
+            for work in data['pics']:
                 self.container.append(Artwork(work))
+            last_upload = self.container[-1]['date']
 
     def __len__(self):
         return len(self.container)
@@ -49,22 +57,40 @@ class Album:
 
     def append(self, art_inst=Artwork):
         self.container.append(art_inst)
+        self.last_upload = art_inst.add_date
 
     def remove_at(self, index):
         self.container.pop(index)
+        if len(self.container) > 0:
+            self.last_upload = art_inst.add_date
+        else:
+            self.last_upload = "None"
 
     def pop(self, index):
-        return self.container.pop(index)
+        poped = self.container.pop(index)
+        if len(self.container) > 0:
+            self.last_upload = art_inst.add_date
+        else:
+            self.last_upload = "None"
+        return poped
 
     def rename(self, new_name):
         self.title = new_name
 
-    # def move(self, index, album_inst):
-    #     album_inst.add_artwork(self.container.pop(index))
+    def check_id(self, work_id):
+        checker = False;
+        for art in self.container:
+            if art.id == work_id:
+                checker = True
+                break
+        return checker
+
+
+
 
     @content_show
     def show_album(self):
         return self.container
 
     def to_dict(self):
-        return {"name": self.title, "pics": [item.to_dict() for item in self.container]}
+        return {"name": self.title, "last_updated": self.last_upload, "pics": [item.to_dict() for item in self.container]}
