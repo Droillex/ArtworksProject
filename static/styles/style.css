@@ -6,7 +6,8 @@
 body {
     margin: 0;
     background-color: #232323;
-    font-family: 'Vox';
+    font-family: 'Vox', 'Righteous', cursive;
+    text-align: center;
 }
 
 #album-body {
@@ -17,11 +18,14 @@ header {
     background-color: #131313;
     display: flex;
     justify-content: space-between;
-    padding: 13px;
-    height: 29px;
-    //position: fixed;
-    //z-index: 2;
-    //width: 100vh;
+    padding: 5px;
+    height: 40px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    margin: 0;
+    z-index: 3;
 }
 
 .header_section {
@@ -32,7 +36,6 @@ header {
 .header_item {
     padding: 5px 15px;
     font-size: 20px;
-    margin-left: 7px;
     color: #a2a2a2;
 }
 
@@ -42,30 +45,39 @@ header {
 
 .headerLogo {
     padding: 0 5px;
-    color: #d7d7d7;
+    color: #ffffff;
     font-size: 30px;
-    //text-transform: uppercase;
+    text-transform: uppercase;
 }
 
 .logo:after {
-    font-size: 35px;
     content: "_";
-    //color: #d7d7d7;
     color: #94b2b9;
 }
 
+.headerButton:hover {
+    background-color: rgb(0, 0, 0);
+    border-radius: 3px;
+}
 
-body {
-    background-color: #232323;
-    margin: 0;
-    text-align: center;
+#exit:hover {
+    background-color: rgb(151, 38, 38);
+    border-radius: 3px;
+}
+
+.headerButton:hover a {
+    color: #ffffff;
+}
+
+#login:hover {
+    background-color: rgb(89, 148, 46);
+    border-radius: 3px;
 }
 
 div [class^="item"] {
-    //padding-left: 18%;
-    //padding-right: 18%;
+    /* padding-left: 18%;
+    padding-right: 18%; */
 }
-
 
 .container,
 .container-l {
@@ -149,7 +161,7 @@ div [class^="item"] {
 }
 
 div [class^="loading"] {
-    width: 45%;
+    width: 32%;
     animation: rotate 1.5s infinite;
 }
 
@@ -169,17 +181,20 @@ div [class^="loading"] {
 }
 
 
-
 /*Albums*/
 
-div[class^='albums_'] {
-    color: #a2a2a2;
+.albums_head {
     text-transform: none;
-    font-size: 27px;
+    font-size: 26px;
+}
+
+div[class^='albums_'] {
+    color: #94b2b9;
 }
 
 div[class^='albums_']::before {
     content: ":\\Username\\";
+    color: #a2a2a2;
 }
 
 div[class^='albums_']::after {
@@ -190,16 +205,14 @@ div[class^='albums_']::after {
 .albums_main {
     display: none;
     overflow-wrap: break-word;
-    grid-column: 1/5;
-    width: 80vw;
-    justify-self: start;
-    padding: 20px 0px 0px 30px;
+    background-color: #9a979757;
+    padding: 0 15px;
+    font-size: 22px;
 }
 
 .headerButton a {
     color: #a2a2a2;
 }
-
 
 .grid-albums {
     height: 100%;
@@ -208,42 +221,73 @@ div[class^='albums_']::after {
     align-items: center;
     row-gap: 12%;
     grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 3%;
 }
 
 main {
-    margin: 3%;
+    margin: 50px 0;
 }
 
 .alb_name {
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.432);
+    background-color: #797777;
     z-index: 1;
     width: inherit;
-    display: flex;
+    display: grid;
     justify-content: space-between;
-    height: 2.3vw;
-    line-height: 2.3vw;
+    height: 22.5px;
+    line-height: 22.5px;
+    grid-template-columns: repeat(8, 12.5%);
+}
+
+.rename,
+.delete {
+    color: #ffffff;
+    display: none;
+    justify-self: center;
+}
+
+.rename:hover {
+    color: #94b2b9;
+}
+
+.delete:hover {
+    color: rgb(151, 38, 38);
+}
+
+.rename {
+    grid-column: 2/5;
+    grid-row: 2/3;
+}
+
+.delete {
+    grid-column: 5/8;
+    grid-row: 2/3;
 }
 
 .settings i {
     color: #ffffff;
-    padding: 0 0.8vw;
 }
 
 .settings {
-    visibility: hidden;
+    padding: 0 6px;
+    justify-self: end;
 }
 
-.settings:hover {
-    background-color: rgba(0, 0, 0, 0.432);
+.settings>i:hover {
+    color: #94b2b9;
 }
 
 span {
-    color: white;
-    display: flex;
-    padding: 0 0.5vw;
+    color: #ffffff;
+    display: inline-block;
+    padding: 0 5px;
     overflow: hidden;
     font-size: 20px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    grid-column: 1/8;
+    /*новое*/
+    grid-row: 1/2;
 }
 
 span::after {
@@ -258,6 +302,8 @@ span::before {
 .wrap_alb {
     width: 20vw;
     height: 15vw;
+    display: flex;
+    flex-direction: column;
 }
 
 .wrap_alb img {
@@ -267,14 +313,85 @@ span::before {
     position: relative;
 }
 
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 150;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+    position: relative;
+    background-color: #94b2b9;
+    margin: auto;
+    width: 55%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.modal-header,
+.modal-body,
+.modal-footer {
+    padding: 2%;
+}
+
+.modal-header {
+    background-color: #4e4e4d;
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.modal-body {
+    font-size: 17px;
+    display: flex;
+}
+
+.modal-footer {
+    background-color: #4e4e4d;
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+}
+
+#rename {
+    background: #cccccc;
+    width: 100%;
+    position: relative;
+    border: none;
+    margin-left: 0.5rem;
+    outline: none;
+    background-color: unset;
+    font-size: 17px;
+    font-family: 'Vox', 'Righteous', cursive;
+    padding: unset;
+}
+
+button {
+    width: 49%;
+    margin: unset;
+    background-color: #292927;
+    font-family: "Vox";
+    font-size: 15px;
+    color: #ffffff;
+    border: unset;
+    height: 40px;
+    outline: none;
+}
+
+button:hover {
+    background-color: #131313;
+}
+
 @media screen and (max-width: 960px) {
     .grid-albums {
         grid-template-columns: 1fr 1fr;
         row-gap: 8%;
-    }
-    .alb_name {
-        height: 4vw;
-        line-height: 4vw;
     }
     .wrap_alb {
         width: 40vw;
@@ -285,10 +402,28 @@ span::before {
     }
     .albums_main {
         display: block;
-        grid-column: 1/3;
+    }
+    .albums_main {
+        display: block;
+        height: 50px;
+        line-height: 50px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 2%;
     }
     .header_item {
         padding: 5px 10px;
+    }
+    .modal-body,
+    #rename {
+        font-size: 17px;
+    }
+    .modal-header {
+        font-size: 20px;
+    }
+    .modal-content {
+        width: 75%;
     }
 }
 
@@ -296,10 +431,6 @@ span::before {
     .grid-albums {
         grid-template-columns: 1fr;
         row-gap: 3%;
-    }
-    .alb_name {
-        height: 8vw;
-        line-height: 8vw;
     }
     .wrap_alb {
         width: 80vw;
@@ -310,10 +441,21 @@ span::before {
     }
     .albums_main {
         display: block;
-        grid-column: 1/2;
+        height: 50px;
+        line-height: 50px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 6%;
     }
     .header_item {
-        padding: 5px;
+        padding: 5px 10px;
+    }
+    .modal-body,
+    #rename {
+        font-size: 17px;
+    }
+    .modal-content {
+        width: 95%;
     }
 }
-
