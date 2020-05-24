@@ -304,6 +304,7 @@ span::before {
     height: 15vw;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .wrap_alb img {
