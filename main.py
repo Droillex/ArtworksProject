@@ -119,7 +119,7 @@ def rename_alb():
         resp = {"-1": "Name is too long", "-2": "Album not found", "0": "Album with this name already exists",
                 "1": "Done", "-3": "Unexpected error"}
         res = rename_album(session['user'], name, n_name)
-        return jsonify({"code": res, "message": resp[str(res)]})
+        return jsonify({"code": str(res), "message": resp[str(res)]})
     else:
         return None
 
