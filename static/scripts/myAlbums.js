@@ -1,3 +1,4 @@
+
 var $flag_1 = true;
 var $flag_2 = true;
 var $settings;
@@ -64,8 +65,13 @@ $(".rename").click(function() {
     $("#renameModal").css({ 'display': 'block' });
     $("#renameModal").find("#rename").val($alb_name);
 
-    $(".execute").click(function() {
+    $(".execute").click(function(){
         var $new_name = $("#renameModal").find("#rename").val();
+        fetch(`/api/rename_album?name=${$alb_name}&new_name=${$new_name}`)
+        .then(res => res.json())
+        .then(data => {
+        console.log(data);
+        });
         $($album).find("span").text($new_name);
         $("#renameModal").css({ 'display': 'none' });
     });

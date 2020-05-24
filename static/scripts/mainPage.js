@@ -106,7 +106,7 @@ function handleBlanks(type) {
 function bodyScroll() {
     let windowRelativeBottom = document.documentElement.getBoundingClientRect().bottom;
     if (windowRelativeBottom <= document.documentElement.clientHeight + bottom_offset && bottom_hit == false) {
-        getRows(3);
+        getRows(5);
         handleBlanks('add');
     }
 

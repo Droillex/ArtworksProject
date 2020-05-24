@@ -59,19 +59,28 @@ class Album:
         self.container.append(art_inst)
         self.last_upload = art_inst.add_date
 
-    def remove_at(self, index):
-        self.container.pop(index)
-        if len(self.container) > 0:
-            self.last_upload = art_inst.add_date
-        else:
-            self.last_upload = "None"
+    def remove_artwork(self, id):
+        for i in range(len(self.container)):
+            if self.container[i].id == id:
+                self.container.pop(i)
+                if len(self.container) > 0:
+                    self.last_upload = self.container[-1].add_date
+                else:
+                    self.last_upload = "None"
+                return 1
+        return 0
 
-    def pop(self, index):
-        poped = self.container.pop(index)
-        if len(self.container) > 0:
-            self.last_upload = art_inst.add_date
-        else:
-            self.last_upload = "None"
+
+    def pop(self, id):
+        poped = 0
+        for i in range(len(self.container)):
+            if self.container[i].id == id:
+                poped = self.container.pop(i)
+                if len(self.container) > 0:
+                    self.last_upload = self.container[-1].add_date
+                else:
+                    self.last_upload = "None"
+                return poped
         return poped
 
     def rename(self, new_name):
