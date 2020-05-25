@@ -110,7 +110,7 @@ def get_albums():
         albs = get_user_albums(session['user'])
         return jsonify({"data": albs, "user": session['user']})
     else:
-        return None
+        return redirect(url_for("login_page"))
 
 @app.route('/api/rename_album')
 def rename_alb():
@@ -122,7 +122,7 @@ def rename_alb():
         res = rename_album(session['user'], name, n_name)
         return jsonify({"code": str(res), "message": resp[str(res)]})
     else:
-        return None
+        return redirect(url_for("login_page"))
 
 
 @app.route('/api/remove_album')
@@ -134,7 +134,7 @@ def remove_alb():
         res = remove_album(session['user'], name)
         return jsonify({"code": str(res), "message": resp[str(res)]})
     else:
-        return None
+        return redirect(url_for("login_page"))
 
 
 @app.route('/api/add_album')
@@ -146,7 +146,7 @@ def add_alb():
         res = add_album(session['user'], name)
         return jsonify({"code": str(res), "message": resp[str(res)]})
     else:
-        return None
+        return redirect(url_for("login_page"))
 
 
 
