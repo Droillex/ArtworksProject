@@ -107,7 +107,8 @@ def get_cells():
 @app.route('/api/get_albums')
 def get_albums():
     if 'user' in session:
-        return jsonify(get_user_albums(session['user']))
+        albs = get_user_albums(session['user'])
+        return jsonify({"data": albs, "user": session['user']})
     else:
         return None
 
@@ -119,6 +120,30 @@ def rename_alb():
         resp = {"-1": "Name is too long", "-2": "Album not found", "0": "Album with this name already exists",
                 "1": "Done", "-3": "Unexpected error"}
         res = rename_album(session['user'], name, n_name)
+        return jsonify({"code": str(res), "message": resp[str(res)]})
+    else:
+        return None
+
+
+@app.route('/api/remove_album')
+def remove_alb():
+    name = request.args.get('name')
+    if 'user' in session:
+        resp = {"-1": "Unexpected error", "0": "Album not found",
+                "1": "Done"}
+        res = remove_album(session['user'], name)
+        return jsonify({"code": str(res), "message": resp[str(res)]})
+    else:
+        return None
+
+
+@app.route('/api/add_album')
+def add_alb():
+    name = request.args.get('name')
+    if 'user' in session:
+        resp = {"-2": "Name is too short", "-1": "Name is too long", "0": "Album already exist",
+                "1": "Done"}
+        res = add_album(session['user'], name)
         return jsonify({"code": str(res), "message": resp[str(res)]})
     else:
         return None

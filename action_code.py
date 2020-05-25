@@ -91,9 +91,12 @@ def rename_album(username, album_name, name):
 
 
 def add_album(username, album_name):
-    if len(name) > max_album_name_len:
+    if len(album_name) > max_album_name_len:
         print('Name is too long')
         return -1
+    elif len(album_name) == 0:
+        print('Name is too short')
+        return -2
     client = db_conn(cStr)
     users = client["test_db"]["users"]
     if users.find_one({"_id": username, "albums.name": album_name}) is not None:
@@ -186,7 +189,7 @@ def remove_album(username, album_name):
         except Exception as ex:
             print("Unexpected error", ex)
             client.close()
-            return -2
+            return -1
 
 
 def move_picture(username, from_album, to_album, work_id):

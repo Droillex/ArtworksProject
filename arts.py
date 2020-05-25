@@ -41,13 +41,17 @@ def content_show(f):
 
 class Album:
     def __init__(self, data=[]):
-        self.title = data['name']
-        self.container = []
         self.last_upload = 'None'
-        if len(data['pics']) > 0:
-            for work in data['pics']:
-                self.container.append(Artwork(work))
-            last_upload = self.container[-1]['date']
+        self.container = []
+        if type(data) is str:
+            self.title = data
+        else:
+            self.title = data['name']
+            if len(data['pics']) > 0:
+                for work in data['pics']:
+                    self.container.append(Artwork(work))
+                self.last_upload = self.container[-1]['date']
+
 
     def __len__(self):
         return len(self.container)
