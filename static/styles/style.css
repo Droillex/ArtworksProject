@@ -50,6 +50,12 @@ header {
     text-transform: uppercase;
 }
 
+.headerLogo::after
+{
+    content: ":\\";
+    color: #a2a2a2;
+}
+
 .logo:after {
     content: "_";
     color: #94b2b9;
@@ -193,7 +199,8 @@ div[class^='albums_'] {
 }
 
 div[class^='albums_']::before {
-    content: ":\\Username\\";
+    //content: ":\\Username\\";
+    content: attr(data-content);
     color: #a2a2a2;
 }
 
@@ -237,12 +244,15 @@ main {
     height: 22.5px;
     line-height: 22.5px;
     grid-template-columns: repeat(8, 12.5%);
+    transition: height 0.25s ease-in-out 0s;
 }
 
 .rename,
 .delete {
     color: #ffffff;
-    display: none;
+    //display: none;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
     justify-self: center;
 }
 
@@ -273,9 +283,12 @@ main {
     justify-self: end;
 }
 
-.settings>i:hover {
-    color: #94b2b9;
+@media (hover: hover){
+    .settings>i:hover{
+        color:#94b2b9;
+    }
 }
+
 
 span {
     color: #ffffff;
@@ -305,6 +318,7 @@ span::before {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    transition: all 0.25s ease-in-out 0s;
 }
 
 .wrap_alb img {
@@ -315,7 +329,8 @@ span::before {
 }
 
 .modal {
-    display: none;
+    //display: none;
+    display: block;
     position: fixed;
     z-index: 150;
     padding-top: 100px;
@@ -361,7 +376,7 @@ span::before {
     justify-content: space-between;
 }
 
-#rename {
+#inp {
     background: #cccccc;
     width: 100%;
     position: relative;
@@ -463,4 +478,10 @@ button:hover {
 }
 div[class^='modal-body'] label, div[class^='modal-body'] input{
     color: white;        
+}
+
+a
+{
+    text-decoration: none;
+    color: inherit;
 }
