@@ -19,9 +19,9 @@ def generate_key(stringLength=8):
     return ''.join((random.choice(chars) for i in range(stringLength)))
 
 
-#key = generate_key(12)
+key = generate_key(12)
 app = Flask(__name__, static_url_path='', static_folder='static/')
-#app.secret_key = key
+app.secret_key = key
 #app.permanent_session_lifetime = timedelta(hours=const.session_hours)
 app.config['JSON_AS_ASCII'] = False
 
