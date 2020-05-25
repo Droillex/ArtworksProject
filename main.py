@@ -14,12 +14,12 @@ import apscheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
-def generate_key(stringLength=8):
-    chars = string.ascii_letters + string.digits
-    return ''.join((random.choice(chars) for i in range(stringLength)))
+# def generate_key(stringLength=8):
+#     chars = string.ascii_letters + string.digits
+#     return ''.join((random.choice(chars) for i in range(stringLength)))
 
 
-key = generate_key(12)
+key = const.password
 app = Flask(__name__, static_url_path='', static_folder='static/')
 app.secret_key = key
 #app.permanent_session_lifetime = timedelta(hours=const.session_hours)
