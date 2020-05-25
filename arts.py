@@ -74,7 +74,6 @@ class Album:
                 return 1
         return 0
 
-
     def pop(self, id):
         poped = 0
         for i in range(len(self.container)):

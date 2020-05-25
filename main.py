@@ -14,15 +14,10 @@ import apscheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
-# def generate_key(stringLength=8):
-#     chars = string.ascii_letters + string.digits
-#     return ''.join((random.choice(chars) for i in range(stringLength)))
-
-
 key = const.password
 app = Flask(__name__, static_url_path='', static_folder='static/')
 app.secret_key = key
-#app.permanent_session_lifetime = timedelta(hours=const.session_hours)
+app.permanent_session_lifetime = timedelta(hours=const.session_hours)
 app.config['JSON_AS_ASCII'] = False
 
 
@@ -38,7 +33,7 @@ def login_page():
         username = request.form['nm']
         password = request.form['pw']
         if get_user(username, password) != 0:
-            #session.permanent = True
+            session.permanent = True
             session["user"] = username
             return redirect(url_for("user_page"))
         else:
@@ -63,16 +58,15 @@ def logout():
     session.pop("user", None)
     return redirect(url_for("login_page"))
 
-#return artwork
+
+# return artwork
 @app.route('/artwork')
 def artworks_page():
     artwork_id = str(request.args.get('id'))
     return handle_artwork(artwork_id)
 
 
-
-
-#Some math
+# Some math
 @app.route('/api/cells')
 def get_cells():
     try:
@@ -148,9 +142,6 @@ def add_alb():
         return jsonify({"code": str(res), "message": resp[str(res)]})
     else:
         return jsonify({"code": "-100", "message": "There are no user in session"})
-
-
-
 
 
 # Creating background task to regularly update picture index
