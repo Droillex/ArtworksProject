@@ -19,10 +19,10 @@ def generate_key(stringLength=8):
     return ''.join((random.choice(chars) for i in range(stringLength)))
 
 
-key = generate_key(12)
+#key = generate_key(12)
 app = Flask(__name__, static_url_path='', static_folder='static/')
-app.secret_key = key
-app.permanent_session_lifetime = timedelta(hours=const.session_hours)
+#app.secret_key = key
+#app.permanent_session_lifetime = timedelta(hours=const.session_hours)
 app.config['JSON_AS_ASCII'] = False
 
 
@@ -38,7 +38,7 @@ def login_page():
         username = request.form['nm']
         password = request.form['pw']
         if get_user(username, password) != 0:
-            session.permanent = True
+            #session.permanent = True
             session["user"] = username
             return redirect(url_for("user_page"))
         else:
@@ -104,15 +104,16 @@ def get_cells():
     return jsonify({'data': result})
 
 
-@app.route('/api/get_albums')
+@app.route('/api/get_albums', methods=["POST"])
 def get_albums():
     if 'user' in session:
         albs = get_user_albums(session['user'])
-        return jsonify({"data": albs, "user": session['user']})
+        return jsonify({"data": albs, "user": session['user'],"code": "1"})
     else:
-        return redirect(url_for("login_page"))
+        return jsonify({"code": "-100", "message": "There are no user in session"})
 
-@app.route('/api/rename_album')
+
+@app.route('/api/rename_album', methods=["POST"])
 def rename_alb():
     name = request.args.get('name')
     n_name = request.args.get('new_name')
@@ -122,10 +123,10 @@ def rename_alb():
         res = rename_album(session['user'], name, n_name)
         return jsonify({"code": str(res), "message": resp[str(res)]})
     else:
-        return redirect(url_for("login_page"))
+        return jsonify({"code": "-100", "message": "There are no user in session"})
 
 
-@app.route('/api/remove_album')
+@app.route('/api/remove_album', methods=["POST"])
 def remove_alb():
     name = request.args.get('name')
     if 'user' in session:
@@ -134,10 +135,10 @@ def remove_alb():
         res = remove_album(session['user'], name)
         return jsonify({"code": str(res), "message": resp[str(res)]})
     else:
-        return redirect(url_for("login_page"))
+        return jsonify({"code": "-100", "message": "There are no user in session"})
 
 
-@app.route('/api/add_album')
+@app.route('/api/add_album', methods=["POST"])
 def add_alb():
     name = request.args.get('name')
     if 'user' in session:
@@ -146,7 +147,7 @@ def add_alb():
         res = add_album(session['user'], name)
         return jsonify({"code": str(res), "message": resp[str(res)]})
     else:
-        return redirect(url_for("login_page"))
+        return jsonify({"code": "-100", "message": "There are no user in session"})
 
 
 

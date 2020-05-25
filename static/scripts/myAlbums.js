@@ -3,11 +3,18 @@ var $flag_1 = true;
 var $flag_2 = true;
 var $settings;
 
-fetch(`/api/get_albums`)
+fetch(`/api/get_albums`, {method: 'POST', redirect: 'follow'})
         .then(res => res.json())
         .then(data => {
-        $(".albums_head").attr('data-content',`${data["user"]}\\`);
-        add_albums(data['data']);
+        if(data['code'] == 1)
+        {
+            $(".albums_head").attr('data-content',`${data["user"]}\\`);
+            add_albums(data['data']);
+        }
+        else
+        {
+            redirect_to("login");
+        }
 
     });
 
@@ -192,10 +199,14 @@ function exec_rename(event)
     alb = event.data.alb;
     var $alb_name = alb.find("span").text();
     var $new_name = $("#renameModal").find("#inp").val();
-    fetch(`/api/rename_album?name=${$alb_name}&new_name=${$new_name}`)
+    fetch(`/api/rename_album?name=${$alb_name}&new_name=${$new_name}`,{method: 'POST', redirect: 'follow'})
     .then(res => res.json())
     .then(data => {
         console.log(data);
+        if(data['code'] == '-100')
+        {
+            redirect_to('login');
+        }
         if(data['code'] == 1)
         {
             alb.find("span").text($new_name);
@@ -213,10 +224,14 @@ function exec_delete(event)
 {
     alb = event.data.alb;
     var $alb_name = alb.find("span").text();
-    fetch(`/api/remove_album?name=${$alb_name}`)
+    fetch(`/api/remove_album?name=${$alb_name}`,{method: 'POST', redirect: 'follow'})
         .then(res => res.json())
         .then(data => {
         console.log(data);
+                if(data['code'] == '-100')
+        {
+            redirect_to('login');
+        }
         if(data['code'] == 1)
         {
             alb.parent().remove();
@@ -232,10 +247,14 @@ function exec_delete(event)
 function exec_add()
 {
     var name = $("#renameModal").find("#inp").val();
-    fetch(`/api/add_album?name=${name}`)
+    fetch(`/api/add_album?name=${name}`,{method: 'POST', redirect: 'follow'})
         .then(res => res.json())
         .then(data => {
         console.log(data);
+        if(data['code'] == '-100')
+        {
+            redirect_to('login');
+        }
         if(data['code'] == 1)
         {
             add_album(name);
@@ -249,5 +268,7 @@ function exec_add()
 }
 
 
-
-
+function redirect_to(adress)
+{
+    window.location = `/${adress}`;
+}

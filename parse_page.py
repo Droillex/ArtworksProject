@@ -59,7 +59,7 @@ def parse_cgsociety_work(res):
 
 
 # Collecting Recent (quality filter), rest from featured
-def cgsociety_collect(btm=1, top=235, json_url='', pages=0, op=''):
+def cgsociety_collect(btm=1, top=180, json_url='', pages=0, op=''):
     ct = []
     hp = 3
     for j in range(pages):
@@ -225,7 +225,7 @@ def get_rating():
                           '=&per_page=20')
     with open('static/index/CGtrending.json', 'w') as fp:
         json.dump(cgs_urls, fp)
-    as_urls = parse_page('https://artstation.com/projects?sorting=trending', rng=50)
+    as_urls = parse_page('https://artstation.com/projects?sorting=trending', rng=40)
     with open('static/index/AStrending.json', 'w') as fp:
         json.dump(as_urls, fp)
     end = time.time()
