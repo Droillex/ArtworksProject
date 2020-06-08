@@ -220,17 +220,17 @@ def move_picture(username, from_album, to_album, work_id):
         return -2
 
 
-# pic = {"title": "pic_test3", "author_name":
-#     "author_test", "author_link": "vk.com/alfren_test", "description": "some txt",
-#        "author_logo": "https://sun4-16.userapi.com/xvVvy37Jp9JWuQ3__IkE3nrlfvgxzpHZ9S2i8Q/C_E3z5Hbioo.jpg",
-#        "work_id": "00000", "content":
-#            [
-#                "https://sun5-4.userapi.com/Vg7ZhKcexy7_NyKj4h25M1RZ_tLw1HAD1H1sDA/TQtA6UMmooU.jpg",
-#                "https://sun5-4.userapi.com/rik3RC8xb919llVsZRbWa90JMZPfIjAgODm5hQ/NJyAD4AjSC0.jpg"
-#            ]}
+pic = {"title": "pic_test3", "author_name":
+    "author_test", "author_link": "vk.com/alfren_test", "description": "some txt",
+       "author_logo": "https://sun4-16.userapi.com/xvVvy37Jp9JWuQ3__IkE3nrlfvgxzpHZ9S2i8Q/C_E3z5Hbioo.jpg",
+       "work_id": "00000", "content":
+           [
+               "https://sun5-4.userapi.com/Vg7ZhKcexy7_NyKj4h25M1RZ_tLw1HAD1H1sDA/TQtA6UMmooU.jpg",
+               "https://sun5-4.userapi.com/rik3RC8xb919llVsZRbWa90JMZPfIjAgODm5hQ/NJyAD4AjSC0.jpg"
+           ]}
 
 # print(check_work_id("test1", "abcdf1"))
-# add_pic("test1", "sample one", pic)
+#add_pic("test1", "tst1", pic)
 #rename_album("test1", "sample one1", "sample one")
 # move_picture("test1", "sample one", "test_album", 3)
 # get_user_albums('test1')

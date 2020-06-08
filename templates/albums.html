@@ -5,19 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link rel="stylesheet" href="styles/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.js"></script>
 </head>
 
 <body id="album-body">
     <header>
         <div class="header_section">
             <div class="header_item headerLogo">
-                <a href="/">
-                    Artificial
-                </a>
+                <a href="/">Artificial</a>
             </div>
-            <div class="albums_head">
-                Albums
-            </div>
+            <div class="albums_head" onclick="open_album()">Albums</div>
         </div>
         <div class="header_section">
             <div class="header_item headerButton" id="plus">
@@ -37,7 +34,7 @@
 
     <main>
         <div class="albums_main">
-            Albums
+            <a onclick="open_album()">Albums</a>
         </div>
         <div class="grid-albums">
         </div>           

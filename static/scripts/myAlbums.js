@@ -2,34 +2,53 @@
 var $flag_1 = true;
 var $flag_2 = true;
 var $settings;
+var user_data;
+var current_dir;
+var opening = false;
 
-fetch(`/api/get_albums`, {method: 'POST', redirect: 'follow'})
+
+
+fetch(`/api/get_albums`,{method: 'POST'})
         .then(res => res.json())
         .then(data => {
         if(data['code'] == 1)
         {
-            $(".albums_head").attr('data-content',`${data["user"]}\\`);
-            add_albums(data['data']);
+            user_data = data['data'];
+            $(".albums_head").attr('data-content',`:\\${data["user"]}\\`);
+            $(".albums_main").attr('data-content',`:\\${data["user"]}\\`);
+            open_album();
         }
         else
         {
-            redirect_to("login");
+            window.alert(data['message']);
         }
-
-    });
-
+        });
 
 
-function add_album(name, url='')
+
+function add_window(name, url='', typ = 'album')
 {   
     let alb_pic = "";
     if(url!='')
     {
-        alb_pic = url
+        alb_pic = url;
+        switch (typ) 
+        {
+            case 'album':
+                $img = $("<img>", {"src": alb_pic,"alt":"Album","onclick":`open_album("${name}")`});
+                break;
+
+            case 'picture':
+                $img = $("<img>", {"src": alb_pic,"alt":"Album","onclick":`open_pic("")`});
+                break;
+            default:
+                break;
+        }
     }
     else
     {
-        alb_pic = "pics/empty-album.jpg"
+        alb_pic = "pics/empty-album.jpg";
+        $img = $("<img>", {"src": alb_pic,"alt":"Album"});
     }
 
     let $new_alb = $("<div>", {"class":"wrap_alb", "onmouseleave": "hover_leave()"});
@@ -42,36 +61,65 @@ function add_album(name, url='')
      var $album = $(this).parent();
      $settings = $album;
      $($settings).css({'height':'inherit'});
-     $($settings).find(".rename, .delete").css({'opacity':'1'});
+     $($settings).find(".rename, .delete").css({'opacity':'1','pointer-events':'auto'});
+
     });
 
     $albname.append($sett.append($("<i>", {"class":"fas fa-cog"})));
-    $ren = $("<div>", {"class":"rename"});
-    $ren.click(renaming);
-    $albname.append($ren.append($("<i>", {"class":"fas fa-pencil-alt fa-3x"})));
     $del = $("<div>", {"class":"delete"});
-    $del.click(deleting);
+
+    switch (typ) 
+    {
+        case 'album':
+            $ren = $("<div>", {"class":"rename"});
+            $ren.click(renaming);
+            $albname.append($ren.append($("<i>", {"class":"fas fa-pencil-alt fa-3x"})));
+            $del.click(deleting);
+            break;
+
+        case 'picture':
+            $mov = $("<div>", {"class":"rename"});
+            $mov.click(moving);
+            $albname.append($mov.append($("<i>", {"class":"fas fa-arrow-left fa-3x"})));
+            $del.click(deleting_pic);
+            break;
+        default:
+            break;
+    }
+
+
+
     $albname.append($del.append($("<i>", {"class":"far fa-trash-alt fa-3x"})));
     $new_alb.append($albname);
-    $new_alb.append($("<img>", {"src": alb_pic,"alt":"Album"}));
+    $new_alb.append($img);
     $('.grid-albums').append($new_alb);
 }
 
 
 function add_albums(dat){
-    for (i = 0; i < dat.length; i++) 
-    {
-        let alb_pic = "";
-        pic_amount = dat[i]["pics"].length
-        if(pic_amount >0)
-        {
-            alb_pic = dat[i]["pics"][pic_amount-1]["content"][0]
-        }
 
-        add_album(dat[i]["name"],alb_pic);
-        
-    }
+        //console.log(dat);
+        for (i = 0; i < dat.length; i++) 
+        {
+            let alb_pic = "";
+            pic_amount = dat[i]["pics"].length
+            if(pic_amount >0)
+            {
+                alb_pic = dat[i]["pics"][pic_amount-1]["content"][0]
+            }
+            add_window(dat[i]["name"],alb_pic);
+        }
+    
 }
+
+function add_pics(dat){
+        for (i = 0; i < dat.length; i++) 
+        {
+            add_window(dat[i]["work_id"], dat[i]["content"][0],'picture');
+        }
+    
+}
+
 
 
 
@@ -79,7 +127,8 @@ function add_albums(dat){
 function hover_leave()
 {
     $($settings).css({'height':'22.5px'});
-    $($settings).find(".rename, .delete").css({'opacity': '0'})
+    //,'display':'block'
+    $($settings).find(".rename, .delete").css({'opacity': '0','pointer-events':'none'})
 }
 
 
@@ -145,7 +194,7 @@ function modalwindow(typ, head_text, body_text, exec_func, params={}, inp_value=
 
 //Показ полного имени альбома
 $(".albums_main").click(function() {
-    if ($flag == true) {
+    if ($flag_1 == true) {
         $(this).css({
             'height': 'unset',
             'overflow': 'unset',
@@ -194,6 +243,16 @@ function adding()
 
 
 
+function moving()
+{
+    console.log('Trying to move picture');
+}
+
+function deleting_pic()
+{
+    console.log('Trying to delete picture');  
+}
+
 function exec_rename(event)
 {
     alb = event.data.alb;
@@ -207,9 +266,15 @@ function exec_rename(event)
         {
             redirect_to('login');
         }
+        else
+        {
+            get_user_data();
+        }
         if(data['code'] == 1)
         {
             alb.find("span").text($new_name);
+            idx = user_data.map(function(e) { return e['name']; }).indexOf($alb_name);
+            user_data[idx]['name'] = $new_name;
         }
         else
         {
@@ -228,13 +293,19 @@ function exec_delete(event)
         .then(res => res.json())
         .then(data => {
         console.log(data);
-                if(data['code'] == '-100')
+        if(data['code'] == '-100')
         {
             redirect_to('login');
+        }
+        else
+        {
+            get_user_data();
         }
         if(data['code'] == 1)
         {
             alb.parent().remove();
+            idx = user_data.map(function(e) { return e['name']; }).indexOf($alb_name);
+            user_data.splice(idx, 1);
         }
         else
         {
@@ -243,6 +314,8 @@ function exec_delete(event)
         });
         $('#renameModal').remove();
 }
+
+
 
 function exec_add()
 {
@@ -255,9 +328,14 @@ function exec_add()
         {
             redirect_to('login');
         }
+        else
+        {
+            get_user_data();
+        }
         if(data['code'] == 1)
         {
-            add_album(name);
+            add_window(name);
+            user_data.push({'last_updated':'None', 'name':name, 'pics':[]});
         }
         else
         {
@@ -268,7 +346,172 @@ function exec_add()
 }
 
 
+function open_album(name = "")
+{
+    if(name != "")
+    {
+        idx = user_data.map(function(e) { return e['name']; }).indexOf(name);
+        if (idx > (-1))
+        {
+            //directory_path
+            $(".header_section").first().append($("<div>", {"class":"directory_path", "onclick": `open_album(${name})`}).append(`\\${name}`));
+            $(".albums_main").first().append($("<a>", {"class":"dir", "onclick": `open_album(${name})`}).append(`\\${name}`))
+            current_dir = idx;
+            $('.wrap_alb').remove();
+            for (i = 0; i < user_data[current_dir]['pics'].length; i++)
+            {
+                //add_window(user_data[current_dir]['pics'][i]['work_id'], user_data[current_dir]['pics'][i]['content'][0],'picture');
+                add_pics(user_data[current_dir]['pics']);
+            }
+        }
+    }
+    else
+    {
+        $('.directory_path').remove();
+        $('.dir').remove();
+        get_user_data();
+        $('.wrap_alb').remove();
+        current_dir = -1;
+        add_albums(user_data); 
+    }
+}
+
+
+function open_pic()
+{
+    console.log('Under construction');
+}
+
 function redirect_to(adress)
 {
     window.location = `/${adress}`;
+}
+
+
+
+function get_user_data()
+{
+    fetch(`/api/get_albums`,{method: 'POST'})
+        .then(res => res.json())
+        .then(data => {
+        if(data['code'] == 1)
+        {
+            compare_data(data['data']);
+        }
+        else
+        {
+            window.alert(data['message']);
+        }
+        });
+}
+
+
+function compare(data1, data2)
+{
+
+    return _.isEqual(data1, data2);
+}
+
+function reset_data()
+{
+    current_dir = -1;
+    $("#renameModal").remove();
+    $('.wrap_alb').remove();
+    add_albums(user_data);
+}
+
+function compare_data(new_data)
+{
+    //something changed
+    if (compare(user_data, new_data) == false)
+    {     
+        window.alert('Data changed!');
+
+        // Inside the album
+        if(current_dir != -1)
+        {
+            naming = user_data[current_dir]['name'];
+            idx = new_data.map(function(e) { return e['name']; }).indexOf(naming);
+            if(idx != -1)
+            {
+                if(compare(user_data[current_dir],new_data[idx]) == false)
+                {
+                    //Альбом, в который зашли, изменился
+                    console.log('зашли в альбом, а он изменился!');
+                    current_dir = idx;
+                    $("#renameModal").remove();
+                    $('.wrap_alb').remove();
+                    user_data = new_data;
+                    add_pics(new_data[idx]);
+                }
+                else
+                {
+                    user_data = new_data;
+                    console.log('зашли в альбом, а он не изменился');
+                }
+            }
+            else
+            {
+                user_data = new_data;
+                reset_data();
+                console.log('зашли в альбом, а он был удалён');
+            }
+
+        }
+
+        // Viewing albums list
+        else
+        {
+            // if length of albums != same
+            if(user_data.length != new_data.length)
+            {
+                user_data = new_data;
+                reset_data();
+                console.log('количество альбомов изменилось');
+            }
+            // if length is equal, write all album names, compare
+            else
+            {
+                old = {};
+                nw = {};
+                for (i = 0; i < user_data.length; i++) 
+                {
+                    if(user_data[i]['pics'].length > 0)
+                    {
+                        old[user_data[i]['name']] = user_data[i]['pics'][user_data[i]['pics'].length-1]['content'][0];
+                    }
+                    else
+                    {
+                        old[user_data[i]['name']] = 0;
+                    }
+
+                    if(new_data[i]['pics'].length > 0)
+                    {
+                        nw[new_data[i]['name']] = new_data[i]['pics'][new_data[i]['pics'].length-1]['content'][0];
+                    }
+                    else
+                    {
+                        nw[new_data[i]['name']] = 0;
+                    }
+                }
+
+                if (compare(old,nw) == false)
+                {
+                    console.log('количество не изменилось, но изменилось содержание');
+                    user_data = new_data;
+                    reset_data();
+                }
+                else
+                {
+                    console.log('сами альбомы не изменились, изменилось только содержимое');
+                    user_data = new_data;
+                    //reset_data();
+                }
+            }
+
+
+        }
+
+    }
+
 }

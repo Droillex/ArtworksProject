@@ -4,6 +4,7 @@ let count = [0,0];
 let clm = 5;
 var starter = 1;
 window.onorientationchange = redefineCells;
+window.onresize = redefineCells;
 defineRes();
 getRows(2);
 
@@ -103,6 +104,7 @@ function handleBlanks(type) {
 }
 
 
+
 function bodyScroll() {
     let windowRelativeBottom = document.documentElement.getBoundingClientRect().bottom;
     if (windowRelativeBottom <= document.documentElement.clientHeight + bottom_offset && bottom_hit == false) {
@@ -114,9 +116,8 @@ function bodyScroll() {
 
 function defineRes()
 {
-    clm = Math.max(2, Math.round(window.screen.width / 240));
+    clm = Math.max(2, Math.round(window.innerWidth / 240));
     clm = Math.min(6, clm);
-    console.log(clm);
     setColumnStyles();
 }
 

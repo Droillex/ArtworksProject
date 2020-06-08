@@ -50,7 +50,7 @@ class Album:
             if len(data['pics']) > 0:
                 for work in data['pics']:
                     self.container.append(Artwork(work))
-                self.last_upload = self.container[-1]['date']
+                self.last_upload = self.container[-1].add_date
 
 
     def __len__(self):

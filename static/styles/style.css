@@ -50,11 +50,11 @@ header {
     text-transform: uppercase;
 }
 
-.headerLogo::after
+/*.headerLogo::after
 {
     content: ":\\";
     color: #a2a2a2;
-}
+}*/
 
 .logo:after {
     content: "_";
@@ -192,6 +192,14 @@ div [class^="loading"] {
 .albums_head {
     text-transform: none;
     font-size: 26px;
+    cursor: pointer;
+}
+
+.directory_path {
+    text-transform: none;
+    font-size: 26px;
+    cursor: pointer;
+    color: #94b2b9;
 }
 
 div[class^='albums_'] {
@@ -202,12 +210,14 @@ div[class^='albums_']::before {
     //content: ":\\Username\\";
     content: attr(data-content);
     color: #a2a2a2;
+    pointer-events: none;
+    cursor: none;
 }
 
-div[class^='albums_']::after {
+/*div[class^='albums_']::after {
     content: "_";
     color: #94b2b9;
-}
+}*/
 
 .albums_main {
     display: none;
@@ -215,6 +225,11 @@ div[class^='albums_']::after {
     background-color: #9a979757;
     padding: 0 15px;
     font-size: 22px;
+}
+
+.albums_main::before{
+    content: attr(data-content);
+    color: #a2a2a2;
 }
 
 .headerButton a {
@@ -254,6 +269,7 @@ main {
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
     justify-self: center;
+    pointer-events: none;
 }
 
 .rename:hover {
@@ -414,11 +430,8 @@ button:hover {
         width: 40vw;
         height: 30vw;
     }
-    .albums_head {
+    .albums_head, .directory_path {
         display: none;
-    }
-    .albums_main {
-        display: block;
     }
     .albums_main {
         display: block;
@@ -484,4 +497,139 @@ a
 {
     text-decoration: none;
     color: inherit;
+}
+
+
+.icon
+{
+    width: 30px;
+    height: auto;
+}
+
+
+
+
+//Artwork
+.artwork-container {
+    /* display: flex; */
+    color: white;
+}
+
+.artwork-data {
+    margin-bottom: 1%;
+}
+
+.artwork-data img {
+    display: block;
+    max-width: 100%;
+    max-height: 100vh;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    object-fit: contain;
+}
+
+.artwork-info {
+    padding: 25px;
+    font-size: 30px;
+    /* position: fixed; */
+    /* right: 0; */
+    box-sizing: border-box;
+    /* width: 350px; */
+    /* height: 100vh; */
+    word-break: break-word;
+    display: flex;
+    justify-content: space-between;
+    background-color: #404040;
+}
+
+#description,
+#author_logo {
+    font-size: 20px;
+    /* color: #94b2b9; */
+}
+
+#description {
+    color: #a2a2a2;
+    font-size: 15px;
+}
+
+#author_name {
+    font-size: 15px;
+    float: left;
+    line-height: 50px;
+    margin-right: 15px;
+    color: #94b2b9;
+}
+
+#title {
+    font-size: 30px;
+    color: #ffffff;
+}
+
+.author-info img {
+    width: 50px;
+    border-radius: 50%;
+}
+
+#title::before {
+    content: '>';
+}
+
+@media screen and (max-width: 960px) {
+    .grid-albums {
+        grid-template-columns: 1fr 1fr;
+        row-gap: 8%;
+    }
+    .wrap_alb {
+        width: 40vw;
+        height: 30vw;
+    }
+    .albums_head {
+        display: none;
+    }
+    .albums_main {
+        display: block;
+    }
+    .albums_main {
+        display: block;
+        height: 50px;
+        line-height: 50px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 2%;
+    }
+    .header_item {
+        padding: 5px 10px;
+    }
+    .modal-body,
+    #rename {
+        font-size: 17px;
+    }
+    .modal-header {
+        font-size: 20px;
+    }
+    .modal-content {
+        width: 75%;
+    }
+    #warning {
+        width: 95%;
+    }
+    .author-info {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+    .artwork-info {
+        flex-direction: column;
+        padding: 10px 20px;
+    }
+    #title {
+        font-size: 20px;
+    }
+    .author-info img {
+        width: 40px;
+        border-radius: 50%;
+    }
 }

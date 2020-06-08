@@ -1,10 +1,10 @@
-from flask import Flask, redirect, url_for, request, render_template, session, jsonify
+from flask import Flask, redirect, url_for, request, render_template, session, jsonify, abort
 from datetime import timedelta
 import string
 import random
 from action_code import *
 import const
-from parse_page import parse_page, get_rating, read_json_part, handle_artwork
+from parse_page import parse_page, get_rating, read_json_part, handle_artwork, check_route
 import math
 import json
 
@@ -60,11 +60,19 @@ def logout():
 
 
 # return artwork
-@app.route('/artwork')
+@app.route('/artwork', methods=["POST", "GET"])
 def artworks_page():
     artwork_id = str(request.args.get('id'))
-    return handle_artwork(artwork_id)
-
+    if request.method == "GET":
+        if len(artwork_id) == 0:
+            abort(404)
+        if request.method == "GET":
+            if check_route(artwork_id):
+                return render_template('working.html')
+            else:
+                abort(404)
+    else:
+        return handle_artwork(artwork_id)
 
 # Some math
 @app.route('/api/cells')
@@ -100,9 +108,14 @@ def get_cells():
 
 @app.route('/api/get_albums', methods=["POST"])
 def get_albums():
+    name = request.args.get('name')
     if 'user' in session:
-        albs = get_user_albums(session['user'])
-        return jsonify({"data": albs, "user": session['user'],"code": "1"})
+        if name is None:
+            albs = get_user_albums(session['user'])
+            return jsonify({"data": albs, "user": session['user'], "code": "1"})
+        else:
+            alb = get_album(session['user'], name)
+            return jsonify({"data": [alb.to_dict()], "code": "1", "user": session['user']})
     else:
         return jsonify({"code": "-100", "message": "There are no user in session"})
 
@@ -127,7 +140,7 @@ def remove_alb():
         resp = {"-1": "Unexpected error", "0": "Album not found",
                 "1": "Done"}
         res = remove_album(session['user'], name)
-        return jsonify({"code": str(res), "message": resp[str(res)]})
+        return jsonify({"code": str(res), "message": res})
     else:
         return jsonify({"code": "-100", "message": "There are no user in session"})
 
@@ -144,6 +157,8 @@ def add_alb():
         return jsonify({"code": "-100", "message": "There are no user in session"})
 
 
+
+
 # Creating background task to regularly update picture index
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=get_rating, trigger="interval", minutes=const.idx_refresh_minutes)
@@ -154,4 +169,4 @@ atexit.register(lambda: scheduler.shutdown())
 
 #get_rating()
 
-#app.run()
+app.run()

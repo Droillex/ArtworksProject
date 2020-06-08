@@ -34,10 +34,12 @@ def parse_artstation_work(res):
         'description': desc[3:len(desc) - 4],
         'author_name': res['user']['username'],
         'author_link': res['user']['permalink'],
+        'author_logo': res['user']['medium_avatar_url'],
         'content': []
     }
     for img in res['assets']:
-        result['content'].append(img['image_url'])
+        if img['asset_type'] != 'video_clip':
+            result['content'].append(img['image_url'])
     return result
 
 # Parsing single cgsociety work
@@ -47,6 +49,7 @@ def parse_cgsociety_work(res):
         'description': res['data']['attributes']['description'],
         'author_name': res['included'][0]['attributes']['username'],
         'author_link': res['included'][0]['attributes']['user_root_url'],
+        'author_logo': res['included'][0]['attributes']['avatar_thumb'],
         'content': []
     }
 
@@ -125,17 +128,34 @@ def read_json_part(path, start=0, end=0):
     return data
 
 
-
 def handle_artwork(artwork_id):
-    #Найти нужные данные и отпавить json
+
     if len(artwork_id) == 4:
         r = requests.get('https://cgsociety.org/api/images/{}?user_details=true'.format(artwork_id))
-        res = json.loads(r.text)
+        if r.status_code == 200:
+            res = json.loads(r.text)
+            return parse_cgsociety_work(res)
+        else:
+            return {"status": "error"}
     else:
         r = requests.get('https://artstation.com/projects/{}.json'.format(artwork_id))
-        res = json.loads(r.text)
-    return res
+        if r.status_code == 200:
+            res = json.loads(r.text)
+            return parse_artstation_work(res)
+        else:
+            return {"status": "error"}
 
+
+
+def check_route(artwork_id):
+    if len(artwork_id) == 4:
+        r = requests.get('https://cgsociety.org/api/images/{}?user_details=true'.format(artwork_id))
+    else:
+        r = requests.get('https://artstation.com/projects/{}.json'.format(artwork_id))
+    if r.status_code == 200:
+        return True
+    else:
+        return False
 
 
 # Parsing detailed page with one artwork
