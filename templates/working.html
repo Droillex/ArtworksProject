@@ -28,30 +28,60 @@
         </div>
     </header> 
 
-    <main class="artwork-container">
-        <div class="artwork-info">
+     <main class="atwork-container">
+        <div class="atwork-info">
             <section>
+                <div id="pointer">&gt; </div>
                 <div id="title">
-                    
+                    Title
                 </div>
                 <div id="description">
-                    
+                    Description
                 </div>
             </section>
             <div class="author-info">
-                <div id="author_name">
-                    
+                <div class="author-part">
+                    <div id="author_name">
+                        Author
+                    </div>
+                    <img src="https://cdna.artstation.com/p/users/avatars/000/018/914/large/48942104e1c425ebe53e388edc107413.jpg?1590694779">
                 </div>
-                <img src="https://cdna.artstation.com/p/users/avatars/000/018/914/large/48942104e1c425ebe53e388edc107413.jpg?1590694779">
+                <div class="options">
+                    <div id="source">Visit source page <i class="fas fa-external-link-square-alt"></i></div>
+                    <div id="to_alb">Add to album <i class="fas fa-plus-square"></i></div>
+                </div>
             </div>
         </div>
- <!--        <div class="artwork-data">
+        <div class="atwork-data">
             <img src="https://cdnb.artstation.com/p/assets/images/images/027/439/099/large/anna-nikonova-aka-newmilky-char-dev-3.jpg?1591549784" alt="Picture">
-        </div> -->
-<!--         <div class="artwork-data">
+        </div>
+        <div class="atwork-data">
             <img src="https://cdna.artstation.com/p/assets/images/images/027/439/102/large/anna-nikonova-aka-newmilky-char-dev-6.jpg?1591549788" alt="Picture">
-        </div> -->
+        </div>
     </main>
-    <script src="scripts/artworkPage.js"></script>
-    <script src="https://kit.fontawesome.com/ac072ea40b.js" crossorigin="anonymous"></script>
+    <div id="saveModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                Choose an Album
+            </div>
+            <div class="modal-body">
+                <select id="selectAlb" name="selectAlb" class="selectpicker">
+
+                    <option value="alb_1">Alb-1</option>
+
+                    <option value="alb_2">Alb-2</option>
+
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="execute">Save</button>
+                <button class="exit">Cancel</button>
+            </div>
+        </div>
+    </div>
 </body>
+
+<script src="scripts/atworkPage.js"></script>
+<script src="https://kit.fontawesome.com/ac072ea40b.js" crossorigin="anonymous"></script>
+
+</html>
