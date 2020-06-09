@@ -27,13 +27,13 @@ function FillPage(dat)
 $("#pointer, #title").click(function() {
     if ($flag == true) {
         $("#pointer").css({ 'transform': 'rotate(90deg)' });
-        $("#description").css({ 'display': 'block' });
-        $('.options').css({ 'display': 'unset' });
+        $('#description').animate({ height: 'show' }, 200);
+        $('.options').animate({ height: 'show' }, 500);
         $flag = false;
     } else {
         $("#pointer").css({ 'transform': 'unset' });
-        $("#description").css({ 'display': 'none' });
-        $('.options').css({ 'display': 'none' });
+        $('#description').animate({ height: 'hide' }, 500);
+        $('.options').animate({ height: 'hide' }, 500);
         $flag = true;
     }
 });
