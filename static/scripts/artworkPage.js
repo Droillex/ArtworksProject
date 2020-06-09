@@ -1,6 +1,5 @@
-
-
 var art_data;
+var $flag = true;
 
  fetch(`/${(window.location.pathname+location.search).substr(1)}`,{method: 'POST'})
          .then(res => res.json())
@@ -24,3 +23,25 @@ function FillPage(dat)
     }
 
 }
+
+$("#pointer, #title").click(function() {
+    if ($flag == true) {
+        $("#pointer").css({ 'transform': 'rotate(90deg)' });
+        $("#description").css({ 'display': 'block' });
+        $('.options').css({ 'display': 'unset' });
+        $flag = false;
+    } else {
+        $("#pointer").css({ 'transform': 'unset' });
+        $("#description").css({ 'display': 'none' });
+        $('.options').css({ 'display': 'none' });
+        $flag = true;
+    }
+});
+
+$("#to_alb").click(function() {
+    $("#saveModal").css({ 'display': 'block' });
+})
+
+$(".exit").click(function() {
+    $("#saveModal").css({ 'display': 'none' });
+})
