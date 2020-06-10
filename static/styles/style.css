@@ -50,10 +50,10 @@ header {
     text-transform: uppercase;
 }
 
-.headerLogo:hover
-{
+.headerLogo:hover {
     color: #94b2b9;
 }
+
 
 /*.headerLogo::after
 {
@@ -72,8 +72,9 @@ header {
 }
 
 #exit:hover {
-    background-color: rgb(151, 38, 38);
+    background-color: rgb(180, 76, 76);
     border-radius: 3px;
+    cursor: pointer;
 }
 
 .headerButton:hover a {
@@ -219,6 +220,7 @@ div[class^='albums_']::before {
     cursor: none;
 }
 
+
 /*div[class^='albums_']::after {
     content: "_";
     color: #94b2b9;
@@ -232,7 +234,7 @@ div[class^='albums_']::before {
     font-size: 22px;
 }
 
-.albums_main::before{
+.albums_main::before {
     content: attr(data-content);
     color: #a2a2a2;
 }
@@ -282,7 +284,7 @@ main {
 }
 
 .delete:hover {
-    color: rgb(151, 38, 38);
+    color: rgb(180, 76, 76);
 }
 
 .rename {
@@ -304,12 +306,11 @@ main {
     justify-self: end;
 }
 
-@media (hover: hover){
-    .settings>i:hover{
-        color:#94b2b9;
+@media (hover: hover) {
+    .settings>i:hover {
+        color: #94b2b9;
     }
 }
-
 
 span {
     color: #ffffff;
@@ -367,7 +368,7 @@ span::before {
 .modal-content {
     position: relative;
     //background-color: #94b2b9;
-     background-color: #404040;
+    background-color: #404040;
     margin: auto;
     width: 55%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -420,6 +421,7 @@ button {
     border: unset;
     height: 40px;
     outline: none;
+    cursor: pointer;
 }
 
 button:hover {
@@ -435,7 +437,8 @@ button:hover {
         width: 40vw;
         height: 30vw;
     }
-    .albums_head, .directory_path {
+    .albums_head,
+    .directory_path {
         display: none;
     }
     .albums_main {
@@ -494,23 +497,21 @@ button:hover {
         width: 95%;
     }
 }
-div[class^='modal-body'] label, div[class^='modal-body'] input{
-    color: white;        
+
+div[class^='modal-body'] label,
+div[class^='modal-body'] input {
+    color: white;
 }
 
-a
-{
+a {
     text-decoration: none;
     color: #94b2b9;
 }
 
-
-.icon
-{
+.icon {
     width: 30px;
     height: auto;
 }
-
 
 
 /*artwork*/
@@ -625,8 +626,7 @@ section {
     margin: 10px 0;
 }
 
-#to_alb:hover
-{
+#to_alb:hover {
     color: #ffffff;
 }
 
@@ -645,6 +645,93 @@ option {
     outline: none;
 }
 
+.save-to {
+    padding: 7px;
+    color: #ffffff;
+    background-color: #292927;
+    margin: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.add-alb,
+.del-alb {
+    text-align: center;
+    cursor: pointer;
+    width: 150px;
+    align-self: center;
+}
+
+.add-alb {
+    border: solid 1px #94b2b9;
+    color: #94b2b9;
+    content: 'Add';
+}
+
+.add-alb:hover {
+    background-color: #94b2b9;
+    color: #ffffff;
+}
+
+.del-alb {
+    border: solid 1px rgb(180, 76, 76);
+    color: rgb(180, 76, 76);
+    content: "Remove";
+}
+
+.del-alb:hover {
+    background-color: rgb(180, 76, 76);
+    color: #ffffff;
+}
+
+#saveModal #exit {
+    width: 100%;
+}
+
+.modal-main {
+    max-height: 50vh;
+    overflow-y: scroll;
+}
+
+.save-to:nth-child(1) {
+    background-color: #808e92;
+    cursor: pointer;
+}
+
+.save-to:nth-child(1):hover {
+    background-color: #9f9f9f;
+}
+
+.save-to i {
+    padding-right: 5px;
+}
+
+#choose_content {
+    width: fit-content;
+    min-width: 20%;
+    max-width: 90%;
+}
+
+#choose_content .exit {
+    width: 100%;
+}
+
+.save-to div:nth-child(1) {
+    padding-right: 50px;
+    flex: 1;
+    word-break: break-word;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    background-color: #404040;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 8px;
+    background-color: #94b2b9;
+}
+
 @media screen and (max-width: 960px) {
     .grid-albums {
         grid-template-columns: 1fr 1fr;
@@ -656,9 +743,6 @@ option {
     }
     .albums_head {
         display: none;
-    }
-    .albums_main {
-        display: block;
     }
     .albums_main {
         display: block;
@@ -713,6 +797,19 @@ option {
     .author-part {
         height: 40px;
     }
+    .add-alb,
+    .del-alb {
+        width: 80px;
+    }
+    .save-to div:nth-child(1) {
+        padding-right: 10px;
+    }
+    #choose_content {
+        min-width: 40%;
+    }
+    .save-to {
+        font-size: 15px;
+    }
 }
 
 @media screen and (max-width: 576px) {
@@ -745,5 +842,8 @@ option {
     }
     .modal-content {
         width: 95%;
+    }
+    #choose_content {
+        min-width: 65%;
     }
 }
