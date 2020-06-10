@@ -35,7 +35,9 @@ def parse_artstation_work(res):
         'author_name': res['user']['username'],
         'author_link': res['user']['permalink'],
         'author_logo': res['user']['medium_avatar_url'],
+        'work_link': res['permalink'],
         'content': []
+
     }
     for img in res['assets']:
         if img['asset_type'] != 'video_clip':
@@ -50,9 +52,9 @@ def parse_cgsociety_work(res):
         'author_name': res['included'][0]['attributes']['username'],
         'author_link': res['included'][0]['attributes']['user_root_url'],
         'author_logo': res['included'][0]['attributes']['avatar_thumb'],
+        'work_link': res['data']['attributes']['view_image_url'],
         'content': []
     }
-
     for item in res['included']:
         if item['type'] == 'works':
             result['content'].append(item['attributes']['original_url'])
@@ -131,14 +133,16 @@ def read_json_part(path, start=0, end=0):
 def handle_artwork(artwork_id):
 
     if len(artwork_id) == 4:
-        r = requests.get('https://cgsociety.org/api/images/{}?user_details=true'.format(artwork_id))
+        url = 'https://cgsociety.org/api/images/{}?user_details=true'.format(artwork_id)
+        r = requests.get(url)
         if r.status_code == 200:
             res = json.loads(r.text)
             return parse_cgsociety_work(res)
         else:
             return {"status": "error"}
     else:
-        r = requests.get('https://artstation.com/projects/{}.json'.format(artwork_id))
+        url = 'https://artstation.com/projects/{}.json'.format(artwork_id)
+        r = requests.get(url)
         if r.status_code == 200:
             res = json.loads(r.text)
             return parse_artstation_work(res)

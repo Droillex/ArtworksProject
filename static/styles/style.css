@@ -50,6 +50,11 @@ header {
     text-transform: uppercase;
 }
 
+.headerLogo:hover
+{
+    color: #94b2b9;
+}
+
 /*.headerLogo::after
 {
     content: ":\\";
@@ -496,7 +501,7 @@ div[class^='modal-body'] label, div[class^='modal-body'] input{
 a
 {
     text-decoration: none;
-    color: inherit;
+    color: #94b2b9;
 }
 
 
@@ -508,8 +513,8 @@ a
 
 
 
+/*artwork*/
 
-//Artwork
 .artwork-container {
     /* display: flex; */
     color: white;
@@ -530,41 +535,47 @@ a
 }
 
 .artwork-info {
-    padding: 25px;
+    padding: 20px;
     font-size: 30px;
-    /* position: fixed; */
-    /* right: 0; */
     box-sizing: border-box;
-    /* width: 350px; */
-    /* height: 100vh; */
     word-break: break-word;
     display: flex;
     justify-content: space-between;
     background-color: #404040;
 }
 
-#description,
-#author_logo {
-    font-size: 20px;
-    /* color: #94b2b9; */
+.author-part {
+    height: 50px;
 }
 
 #description {
     color: #a2a2a2;
-    font-size: 15px;
+    font-size: 18px;
+    clear: left;
+    display: none;
+    padding: 0 15px;
 }
 
 #author_name {
-    font-size: 15px;
+    font-size: 18px;
     float: left;
     line-height: 50px;
     margin-right: 15px;
     color: #94b2b9;
 }
 
+.author-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 40%;
+}
+
 #title {
     font-size: 30px;
     color: #ffffff;
+    cursor: pointer;
 }
 
 .author-info img {
@@ -572,8 +583,66 @@ a
     border-radius: 50%;
 }
 
-#title::before {
-    content: '>';
+section {
+    width: 60%;
+}
+
+#title,
+#pointer {
+    line-height: 50px;
+}
+
+#pointer {
+    font-size: 30px;
+    float: left;
+    margin-right: 5px;
+    transition: all 0.3s ease-in-out 0s;
+    color: #94b2b9;
+    cursor: pointer;
+}
+
+#pointer:hover {
+    color: #ffffff;
+}
+
+.options {
+    display: none;
+    font-size: 15px;
+    cursor: pointer;
+    text-align: center;
+    width: 50%;
+    color: #eee;
+}
+
+#source,
+#to_alb {
+    padding: 2%;
+    background-color: #94b2b9;
+    color: white;
+}
+
+#source {
+    margin: 10px 0;
+}
+
+#to_alb:hover
+{
+    color: #ffffff;
+}
+
+
+/*saveModal*/
+
+#selectAlb {
+    border: none;
+    width: 100%;
+    height: 30px;
+    font-family: 'Vox', 'Righteous', cursive;
+    outline: none;
+}
+
+option {
+    outline: none;
 }
 
 @media screen and (max-width: 960px) {
@@ -618,18 +687,63 @@ a
     }
     .author-info {
         display: flex;
-        align-items: center;
         justify-content: flex-end;
     }
     .artwork-info {
         flex-direction: column;
         padding: 10px 20px;
     }
+    #pointer,
     #title {
         font-size: 20px;
     }
     .author-info img {
         width: 40px;
         border-radius: 50%;
+    }
+    section,
+    .author-info,
+    .options {
+        width: 100%;
+    }
+    #author_name {
+        line-height: 40px;
+        font-size: 15px;
+    }
+    .author-part {
+        height: 40px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .grid-albums {
+        grid-template-columns: 1fr;
+        row-gap: 3%;
+    }
+    .wrap_alb {
+        width: 80vw;
+        height: 60vw;
+    }
+    .albums_head {
+        display: none;
+    }
+    .albums_main {
+        display: block;
+        height: 50px;
+        line-height: 50px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 6%;
+    }
+    .header_item {
+        padding: 5px 10px;
+    }
+    .modal-body,
+    #rename {
+        font-size: 17px;
+    }
+    .modal-content {
+        width: 95%;
     }
 }
