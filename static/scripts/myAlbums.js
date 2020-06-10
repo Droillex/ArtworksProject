@@ -53,7 +53,8 @@ function add_window(name, url='', typ = 'album')
 
     let $new_alb = $("<div>", {"class":"wrap_alb", "onmouseleave": "hover_leave()"});
     $albname = $("<div>", {"class": "alb_name"});
-    $albname.append($("<span>").append(name));
+    $albname.append($("<span>",{"class":"alb_features"}).append(`<span></span><span class="underscore">|</span>`));
+    setTimeout(typeWriter, 200, $albname.children().eq(0).children().eq(0), name, 70);
     $sett = $("<div>", {"class":"settings"});
 
     $sett.hover(function() 
@@ -353,11 +354,12 @@ function open_album(name = "")
         idx = user_data.map(function(e) { return e['name']; }).indexOf(name);
         if (idx > (-1))
         {
-            //directory_path
+            directory_path
             $(".header_section").first().append($("<div>", {"class":"directory_path", "onclick": `open_album(${name})`}).append(`\\${name}`));
             $(".albums_main").first().append($("<a>", {"class":"dir", "onclick": `open_album(${name})`}).append(`\\${name}`))
             current_dir = idx;
             $('.wrap_alb').remove();
+
             for (i = 0; i < user_data[current_dir]['pics'].length; i++)
             {
                 //add_window(user_data[current_dir]['pics'][i]['work_id'], user_data[current_dir]['pics'][i]['content'][0],'picture');

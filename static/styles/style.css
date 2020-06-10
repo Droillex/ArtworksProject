@@ -312,7 +312,7 @@ main {
     }
 }
 
-span {
+span.alb_features{
     color: #ffffff;
     display: inline-block;
     padding: 0 5px;
@@ -325,12 +325,12 @@ span {
     grid-row: 1/2;
 }
 
-span::after {
+/*span.alb_features::after {
     content: "_";
     color: #94b2b9;
-}
+}*/
 
-span::before {
+span.alb_features::before {
     content: ">";
 }
 
@@ -574,7 +574,7 @@ a {
 }
 
 #title {
-    font-size: 30px;
+    //font-size: 30px;
     color: #ffffff;
     cursor: pointer;
 }
@@ -846,4 +846,25 @@ option {
     #choose_content {
         min-width: 65%;
     }
+}
+
+
+/* extra crispy*/
+span.underscore
+{
+    color: #94b2b9;
+    font-size: inherit;
+    animation: blinking 1.1s infinite; 
+}
+
+@keyframes blinking{
+    15%{opacity:1;}
+    50%{opacity:0;}
+    85%{opacity:1;}
+
+}
+
+::selection {
+  color: white;
+  background: #94b2b9;
 }

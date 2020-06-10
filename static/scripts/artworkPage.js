@@ -11,7 +11,8 @@ var $flag = true;
 function FillPage(dat)
 {
 
-    $('#title').html(dat['title']);
+    typeWriter($('#title').children().eq(0), dat['title'], 75);
+    $('#title').children().eq(1).fadeOut(500).fadeIn(500);
     $('#description').html(dat['description']);
     $('#author_name').html(dat['author_name']);
     $('.author-info').children().eq(0).attr('href',dat['author_link']);
@@ -28,7 +29,7 @@ function FillPage(dat)
 
 $("#pointer, #title").click(function() {
     if ($flag == true) {
-        $("#pointer").css({ 'transform': 'rotate(90deg)' });
+        $("#pointer").css({ 'transform': 'rotate(90deg)'});
         $('#description').stop();
         $('.options').stop();
         $('#description').animate({ height: 'show' }, 500);

@@ -55,8 +55,9 @@ def user_page():
 
 @app.route('/logout')
 def logout():
+    print(request.referrer)
     session.pop("user", None)
-    return redirect(url_for("login_page"))
+    return redirect(request.referrer)
 
 
 # return artwork
@@ -155,6 +156,14 @@ def add_alb():
         return jsonify({"code": str(res), "message": resp[str(res)]})
     else:
         return jsonify({"code": "-100", "message": "There are no user in session"})
+
+
+@app.route('/api/log_check', methods=["POST"])
+def logcheck():
+    if 'user' in session:
+        return jsonify({'res': session['user']})
+    else:
+        return jsonify({'res': '0'})
 
 
 

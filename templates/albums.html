@@ -11,35 +11,35 @@
 <body id="album-body">
     <header>
         <div class="header_section">
-            <div class="header_item headerLogo">
-                <a href="/">Artificial</a>
-            </div>
+            <a href="/">
+                <div class="header_item headerLogo">
+                    Artificial
+                </div>
+            </a>
             <div class="albums_head" onclick="open_album()">Albums</div>
         </div>
         <div class="header_section">
             <div class="header_item headerButton" id="plus">
-                <a href="#"><i class="fas fa-plus" onclick="adding()"></i>
-                </a>
-            </div>
-            <div class="header_item headerButton" id="settings">
-                <a href="#"><i class="fas fa-cog"></i>
-                    </a>
-            </div>
-            <div class="header_item headerButton exit" id="exit">
-                <a href="#"><i class="fas fa-door-open"></i>
-                </a>
-            </div>
+                <i class="fas fa-plus" onclick="adding()"></i>
+            </div>  
+                <div class="header_item headerButton" id="settings">
+                    <i class="fas fa-cog"></i>
+                </div>
+            <a href="/logout">
+                <div class="header_item headerButton exit" id="exit">
+                    <i class="fas fa-door-open"></i>
+                </div>
+            </a>
         </div>
     </header>
 
     <main>
-        <div class="albums_main">
-            <a onclick="open_album()">Albums</a>
+        <div class="albums_main"><a onclick="open_album()">Albums</a>
         </div>
         <div class="grid-albums">
         </div>           
     </main>
-        
+    <script src="scripts/niceFeatures.js"></script>
     <script src="scripts/myAlbums.js"></script>
     <script src="https://kit.fontawesome.com/ac072ea40b.js" crossorigin="anonymous"></script>
 </body>

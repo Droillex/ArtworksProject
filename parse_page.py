@@ -225,10 +225,18 @@ def parse_page(json_url, rng=1):
                     #    val = rounder(diff.total_seconds()/3600)
                     #    avg = res['data'][i]['likes_count']/val
                     # print("Средние лайки за час: {}, часов назад: {}".format(avg, val))
-
-                    urls.append({'img_url': res['data'][i]['cover']['small_square_url'],
+                    try:
+                        urls.append({'img_url': res['data'][i]['cover']['small_square_url'],
                                  'title': res['data'][i]['title'],
                                  'link': res['data'][i]['permalink']})
+                    except:
+                        lnk = str(res['data'][i]['permalink']).replace('artwork', 'projects')+'.json'
+                        rs = requests.get(lnk)
+                        urls.append({'img_url': json.loads(rs.text)['cover_url'],
+                                 'title': res['data'][i]['title'],
+                                 'link': res['data'][i]['permalink']})
+
+
             else:
                 pass
                 # If error
