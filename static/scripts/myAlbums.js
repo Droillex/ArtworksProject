@@ -53,8 +53,8 @@ function add_window(name, url='', typ = 'album')
 
     let $new_alb = $("<div>", {"class":"wrap_alb", "onmouseleave": "hover_leave()"});
     $albname = $("<div>", {"class": "alb_name"});
-    $albname.append($("<span>",{"class":"alb_features"}).append(`<span></span><span class="underscore">|</span>`));
-    setTimeout(typeWriter, 200, $albname.children().eq(0).children().eq(0), name, 70);
+    $albname.append($("<span>",{"class":"alb_features"}).append(`<span>${name}</span><span class="underscore">_</span>`));
+    //setTimeout(typeWriter, 200, $albname.children().eq(0).children().eq(0), name, 70);
     $sett = $("<div>", {"class":"settings"});
 
     $sett.hover(function() 
@@ -62,6 +62,7 @@ function add_window(name, url='', typ = 'album')
      var $album = $(this).parent();
      $settings = $album;
      $($settings).css({'height':'inherit'});
+     $($settings).children().eq(1).children().first().css({'opacity':0});
      $($settings).find(".rename, .delete").css({'opacity':'1','pointer-events':'auto'});
 
     });
@@ -130,6 +131,7 @@ function hover_leave()
     $($settings).css({'height':'22.5px'});
     //,'display':'block'
     $($settings).find(".rename, .delete").css({'opacity': '0','pointer-events':'none'})
+    $($settings).children().eq(1).children().first().css({'opacity':1});
 }
 
 
@@ -221,7 +223,7 @@ $(".albums_main").click(function() {
 function renaming()
 {
     var $album = $(this).parent();
-    var $alb_name = $($album).find("span").text();
+    var $alb_name = $($album).find(".alb_features").children().first().text();
     modalwindow("input",`Renaming "${$alb_name}"`, "rename", exec_rename, {alb: $album}, $alb_name);
 }
 
@@ -232,7 +234,7 @@ function renaming()
 function deleting()
 {   
     var $album = $(this).parent();
-    var $alb_name = $($album).find("span").text();
+    var $alb_name = $($album).find(".alb_features").children().first().text();
     modalwindow("delete",`Deleting "${$alb_name}"`, "MSG: Are you sure you want to delete this album?", exec_delete, {alb: $album});
 }
 
@@ -354,27 +356,73 @@ function open_album(name = "")
         idx = user_data.map(function(e) { return e['name']; }).indexOf(name);
         if (idx > (-1))
         {
-            directory_path
-            $(".header_section").first().append($("<div>", {"class":"directory_path", "onclick": `open_album(${name})`}).append(`\\${name}`));
-            $(".albums_main").first().append($("<a>", {"class":"dir", "onclick": `open_album(${name})`}).append(`\\${name}`))
-            current_dir = idx;
-            $('.wrap_alb').remove();
+            let pos = $(".grid-albums").outerWidth();
+            $(".grid-albums").animate({
+                right: `${pos}px`
+            }, 'slow', function() 
+            {                
+                $(".header_section").first().append($("<div>", {"class":"directory_path", "onclick": `open_album(${name})`}).append(`\\${name}`));
+                $(".albums_main").first().children().first().after($("<a>", {"class":"dir", "onclick": `open_album(${name})`}).append(`\\${name}`))
+                current_dir = idx;
+                $('.wrap_alb').remove();
+                for (i = 0; i < user_data[current_dir]['pics'].length; i++)
+                {
+                    add_pics(user_data[current_dir]['pics']);
+                }
+                //$(".grid-albums").css({ right: -pos });
+                $(".grid-albums").animate({
+                right: `0px`
+                }, 'slow', function() {
+                    console.log('finished');
+                });
 
-            for (i = 0; i < user_data[current_dir]['pics'].length; i++)
-            {
-                //add_window(user_data[current_dir]['pics'][i]['work_id'], user_data[current_dir]['pics'][i]['content'][0],'picture');
-                add_pics(user_data[current_dir]['pics']);
-            }
+            });
+
+            // directory_path
+            // $(".header_section").first().append($("<div>", {"class":"directory_path", "onclick": `open_album(${name})`}).append(`\\${name}`));
+            // $(".albums_main").first().append($("<a>", {"class":"dir", "onclick": `open_album(${name})`}).append(`\\${name}`))
+            // current_dir = idx;
+            // $('.wrap_alb').remove();
+
+            // for (i = 0; i < user_data[current_dir]['pics'].length; i++)
+            // {
+            //     //add_window(user_data[current_dir]['pics'][i]['work_id'], user_data[current_dir]['pics'][i]['content'][0],'picture');
+            //     add_pics(user_data[current_dir]['pics']);
+            // }
         }
     }
     else
     {
-        $('.directory_path').remove();
-        $('.dir').remove();
-        get_user_data();
-        $('.wrap_alb').remove();
-        current_dir = -1;
-        add_albums(user_data); 
+        if(current_dir == -1)
+            return;
+
+        // $('.directory_path').remove();
+        // $('.dir').remove();
+        // get_user_data();
+        // $('.wrap_alb').remove();
+        // current_dir = -1;
+        // add_albums(user_data); 
+
+        let pos = $(".grid-albums").outerWidth();
+        $(".grid-albums").animate({
+            right: `${pos}px`
+            }, 'slow', function() 
+        {    
+            $('.directory_path').remove();
+            $('.dir').remove();
+            get_user_data();
+            $('.wrap_alb').remove();
+            current_dir = -1;
+            add_albums(user_data); 
+            //$(".grid-albums").css({ right: -pos });
+            $(".grid-albums").animate({
+                right: `0px`
+                }, 'slow', function() {
+                    console.log('finished');
+            });
+        });
+
+
     }
 }
 

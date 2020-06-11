@@ -244,6 +244,7 @@ div[class^='albums_']::before {
 }
 
 .grid-albums {
+    position: relative;
     height: 100%;
     display: grid;
     justify-items: center;
@@ -255,6 +256,7 @@ div[class^='albums_']::before {
 
 main {
     margin: 50px 0;
+    //overflow: hidden;
 }
 
 .alb_name {
@@ -299,6 +301,7 @@ main {
 
 .settings i {
     color: #ffffff;
+    transition: opacity 0.3s;
 }
 
 .settings {
@@ -868,3 +871,4 @@ span.underscore
   color: white;
   background: #94b2b9;
 }
+
