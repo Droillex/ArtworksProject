@@ -259,7 +259,7 @@ function deleting_pic()
 function exec_rename(event)
 {
     alb = event.data.alb;
-    var $alb_name = alb.find("span").text();
+    var $alb_name = $(alb).find(".alb_features").children().first().text();
     var $new_name = $("#renameModal").find("#inp").val();
     fetch(`/api/rename_album?name=${$alb_name}&new_name=${$new_name}`,{method: 'POST', redirect: 'follow'})
     .then(res => res.json())
@@ -275,7 +275,7 @@ function exec_rename(event)
         }
         if(data['code'] == 1)
         {
-            alb.find("span").text($new_name);
+            $(alb).find(".alb_features").children().first().text($new_name);
             idx = user_data.map(function(e) { return e['name']; }).indexOf($alb_name);
             user_data[idx]['name'] = $new_name;
         }
@@ -291,7 +291,7 @@ function exec_rename(event)
 function exec_delete(event)
 {
     alb = event.data.alb;
-    var $alb_name = alb.find("span").text();
+    var $alb_name = $(alb).find(".alb_features").children().first().text();
     fetch(`/api/remove_album?name=${$alb_name}`,{method: 'POST', redirect: 'follow'})
         .then(res => res.json())
         .then(data => {
