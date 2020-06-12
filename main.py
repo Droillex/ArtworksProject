@@ -224,4 +224,4 @@ atexit.register(lambda: scheduler.shutdown())
 
 #get_rating()
 
-app.run()
+#app.run()
