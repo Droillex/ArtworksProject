@@ -14,3 +14,46 @@ function typeWriter(elem ,txt, speed, underscore=true) {
   	}
 
 }
+
+
+function addmodal(typ, head_text, body_text, exec_func, params={}, add_to ,inp_value="")
+{
+    let $wdw = $("<div>", {"id":"renameModal", "class": "modal"});
+    $modalcontent = $("<div>", {"class": "modal-content"});
+    $modalcontent.append($("<div>", {"class":"modal-header"}).append(head_text));
+    $modalbody = $("<div>", {"class":"modal-body"});
+    if(typ == "input")
+    {
+        $modalbody.append($("<label>", {"for":"inp"}).append(`>${body_text}`));
+        $inp = $("<input>", {"type":"text", "value":"", "id":"inp", "maxlength":"30"});
+        $modalbody.append($inp);
+    }
+    else
+    {
+        $modalbody.append($("<label>").append(`${body_text}`));
+    }
+    $modalcontent.append($modalbody);
+    $modalfooter = $("<div>", {"class":"modal-footer"});
+    $exec = $("<button>", {"class":"execute"});
+
+    $exec.click(params, exec_func);
+
+    $modalfooter.append($exec.append("Execute"))
+    $exit = $("<button>", {"class":"exit"});
+
+    $exit.click(function()
+     {
+        $("#renameModal").remove();
+    });
+
+    $modalfooter.append($exit.append("Cancel"))
+    $modalcontent.append($modalfooter);
+    $wdw.append($modalcontent);
+    //$wdw.css({ 'display': 'block'});
+    add_to.append($wdw);
+    if(typ == "input")
+    {
+    $inp.focus();
+    $inp.val(inp_value);
+    }
+}

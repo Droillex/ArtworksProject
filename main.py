@@ -7,7 +7,7 @@ import const
 from parse_page import parse_page, get_rating, read_json_part, handle_artwork, check_route
 import math
 import json
-
+from arts import *
 
 import atexit
 import apscheduler
@@ -164,6 +164,52 @@ def logcheck():
         return jsonify({'res': session['user']})
     else:
         return jsonify({'res': '0'})
+
+
+@app.route('/api/album_list', methods=["POST"])
+def alb_lst():
+    if 'user' in session:
+        res = []
+        work_id = request.args.get('id')
+        albums = get_user_albums(session['user'])
+        for alb in albums:
+            temp_alb = Album(alb)
+            res.append({'name': temp_alb.title, 'status': str(temp_alb.check_id(work_id))})
+        return {'data': res, 'status': '1'}
+    else:
+        return {'data':[], 'status': '0'}
+
+@app.route('/api/add_art', methods=["POST"])
+def add_artwork():
+    work_id = request.args.get('id')
+    alb = request.args.get('alb_name')
+    if 'user' in session and work_id and alb:
+        res = handle_artwork(work_id)
+        if res['work_id'] == 'error':
+            return {'status': 'error'}
+        else:
+            r = add_pic(session['user'], alb, res)
+            return {'status': r}
+    else:
+        return jsonify({"code": "0", "message": "There are no user in session"})
+
+
+@app.route('/api/remove_art', methods=["POST"])
+def remove_artwork():
+    work_id = request.args.get('id')
+    alb = request.args.get('alb_name')
+    if 'user' in session and work_id and alb:
+        res = handle_artwork(work_id)
+        if res['work_id'] == 'error':
+            return {'status': 'error'}
+        else:
+            r = remove_pic(session['user'], alb, work_id)
+            return {'status': r}
+    else:
+        return jsonify({"code": "0", "message": "There are no user in session"})
+
+
+
 
 
 

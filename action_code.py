@@ -141,6 +141,7 @@ def add_pic(username, album_name, pic_dict):
     try:
         users.update_one({"_id": username, "albums.name": album_name}, {"$set": {"albums.$": temp_album.to_dict()}})
         print("Pic successfully added")
+        return 1
     except Exception as ex:
         print("Pic addition failed", ex)
     client.close()
@@ -154,7 +155,6 @@ def remove_pic(username, album_name, work_id):
         client.close()
         return 0
     try:
-
         if temp_album.pop(work_id) == 0:
             client.close()
             return -1

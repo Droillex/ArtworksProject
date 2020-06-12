@@ -4,7 +4,8 @@ class Artwork:
     def __init__(self, db_dict=None):
         if db_dict is None:
             db_dict = {'title': 'SampleTitle', 'author_name': 'SampleAuthor', 'author_link': 'Empty',
-                       'author_logo': 'pics/no-pic.jpg', 'work_id': '00000', 'description': 'No', 'content': []}
+                       'author_logo': 'pics/no-pic.jpg', 'work_id': '00000', 'description': 'No', 'cover': 'no-pic.jpg',
+                       'content': []}
 
         self.title = db_dict['title']
         self.author_name = db_dict['author_name']
@@ -14,19 +15,14 @@ class Artwork:
         self.id = db_dict['work_id']
         self.add_date = datetime.datetime.utcnow()
         self.content = db_dict['content']
+        self.cover_url = db_dict['cover']
 
-    def __str__(self):
-        return 'Artwork Title: {};Description: {};Author: {};Author link: {};Content: {}'.format(self.title,
-                                                                                                 self.description,
-                                                                                                 self.author_name,
-                                                                                                 self.author_link,
-                                                                                                 str(self.content)
-                                                                                                 .strip('[]'))
+
 
     def to_dict(self):
         return {"title": self.title, "author_name": self.author_name, "author_link": self.author_link,
                 "description": self.description, "author_logo": self.author_logo, "date": self.add_date,
-                "work_id": self.id, "content": self.content}
+                "work_id": self.id, "cover":self.cover_url, "content": self.content}
 
 
 def content_show(f):
@@ -74,10 +70,10 @@ class Album:
                 return 1
         return 0
 
-    def pop(self, id):
+    def pop(self, id_name):
         poped = 0
         for i in range(len(self.container)):
-            if self.container[i].id == id:
+            if self.container[i].id == id_name:
                 poped = self.container.pop(i)
                 if len(self.container) > 0:
                     self.last_upload = self.container[-1].add_date

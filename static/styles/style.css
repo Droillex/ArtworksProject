@@ -852,6 +852,13 @@ option {
 }
 
 
+.list_loading
+{
+    text-align: center;
+    padding: 60px 0;
+    color: white;
+}
+
 /* extra crispy*/
 span.underscore
 {

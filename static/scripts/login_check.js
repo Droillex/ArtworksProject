@@ -1,9 +1,10 @@
  
-
+let login_res;
 
  fetch('/api/log_check',{method: 'POST'})
          .then(res => res.json())
          .then(data => {
+         	login_res = data;
             if(data['res'] != '0')
             {
             	console.log('logged in');

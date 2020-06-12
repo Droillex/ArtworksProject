@@ -36,16 +36,27 @@ def parse_artstation_work(res):
         'author_link': res['user']['permalink'],
         'author_logo': res['user']['medium_avatar_url'],
         'work_link': res['permalink'],
-        'content': []
-
+        'content': [],
+        #'cover': res['cover_url'].replace('medium', 'small')
     }
+    prj = requests.get('https://www.artstation.com/users/{}/projects.json?album_id={}'.format(res['user']['username'],
+                                                                                              res['id']))
+    proj = json.loads(prj.text)
+
+    for item in proj['data']:
+        for k, v in item.items():
+            if k == "hash_id" and v == res['hash_id']:
+                result['cover'] = item['cover']['thumb_url']
+
     for img in res['assets']:
         if img['asset_type'] != 'video_clip':
             result['content'].append(img['image_url'])
     return result
 
+
 # Parsing single cgsociety work
 def parse_cgsociety_work(res):
+    print(res['data']['attributes'])
     result = {
         'title': res['data']['attributes']['title'],
         'description': res['data']['attributes']['description'],
@@ -53,7 +64,8 @@ def parse_cgsociety_work(res):
         'author_link': res['included'][0]['attributes']['user_root_url'],
         'author_logo': res['included'][0]['attributes']['avatar_thumb'],
         'work_link': res['data']['attributes']['view_image_url'],
-        'content': []
+        'content': [],
+        'cover': res['data']['attributes']['channel_url']
     }
     for item in res['included']:
         if item['type'] == 'works':
@@ -137,17 +149,21 @@ def handle_artwork(artwork_id):
         r = requests.get(url)
         if r.status_code == 200:
             res = json.loads(r.text)
-            return parse_cgsociety_work(res)
+            rtn = parse_cgsociety_work(res)
+            rtn['work_id'] = artwork_id
+            return rtn
         else:
-            return {"status": "error"}
+            return {"work_id": "error"}
     else:
         url = 'https://artstation.com/projects/{}.json'.format(artwork_id)
         r = requests.get(url)
         if r.status_code == 200:
             res = json.loads(r.text)
-            return parse_artstation_work(res)
+            rtn = parse_artstation_work(res)
+            rtn['work_id'] = artwork_id
+            return rtn
         else:
-            return {"status": "error"}
+            return {"work_id": "error"}
 
 
 

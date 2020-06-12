@@ -16,7 +16,7 @@ function getRows(rows) {
 
 function getCells(rows, columns, starts_at, cnt) {
 
-    fetch(`/api/cells?rows=${rows}&columns=${columns}&starts_at=${starts_at}&cnt=${cnt}&resolutionX=${window.screen.width}&resolutionY=${window.screen.height}`)
+    fetch(`/api/cells?rows=${rows}&columns=${columns}&starts_at=${starts_at}&cnt=${cnt}`)
         .then(res => res.json())
         .then(data => {
             starter += rows;
@@ -58,7 +58,7 @@ function setCells(dat, rows, st) {
         let typ = ["even", "odd"];
         for (j = 0; j < clm - 1 + cls; j++) {
             let $content = $("<a>", { "href": `${pics[cls][idxs[cls]]['link']}` });
-            let $img_wrap = $("<div>", { "class": "img_wrap" }).append($("<img>", { "class": "image", "src": `${pics[cls][idxs[cls]]['img_url']}` }));
+            let $img_wrap = $("<div>", { "class": "img_wrap" }).append($("<img>", { "loading":"lazy", "class": "image", "src": `${pics[cls][idxs[cls]]['img_url']}` }));
             $content.append($img_wrap);
             $content.append($("<div>", { "class": "ov_one" }));
             $content.append($("<div>", { "class": "ov_two" }));
@@ -84,7 +84,7 @@ function handleBlanks(type) {
                 console.log(i);
                 var $load = $("<div>", { "class": "loading" });
                 var $contain = $("<div>", { "class": "container-l" });
-                var $img = $("<img>", { "class": "image", "src": "pics/no-pic.jpg" });
+                var $img = $("<img>", {"class": "image", "src": "pics/no-pic.jpg" });
                 $contain.append($img);
                 $load.append($contain);
                 $load.attr("style", "grid-row:" + starter + "/" + (starter + 1) + ";grid-column: " + ((2 * i) + 2 - typ) + "/" + ((2 * i) + 4 - typ) + ";");

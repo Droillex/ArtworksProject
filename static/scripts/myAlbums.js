@@ -35,11 +35,11 @@ function add_window(name, url='', typ = 'album')
         switch (typ) 
         {
             case 'album':
-                $img = $("<img>", {"src": alb_pic,"alt":"Album","onclick":`open_album("${name}")`});
+                $img = $("<img>", {"loading":"lazy","src": alb_pic,"alt":"Album","onclick":`open_album("${name}")`});
                 break;
 
             case 'picture':
-                $img = $("<img>", {"src": alb_pic,"alt":"Album","onclick":`open_pic("")`});
+                $img = $("<img>", {"loading":"lazy","src": alb_pic,"alt":"Album","onclick":`open_pic("")`});
                 break;
             default:
                 break;
@@ -48,7 +48,7 @@ function add_window(name, url='', typ = 'album')
     else
     {
         alb_pic = "pics/empty-album.jpg";
-        $img = $("<img>", {"src": alb_pic,"alt":"Album"});
+        $img = $("<img>", {"loading":"lazy","src": alb_pic,"alt":"Album"});
     }
 
     let $new_alb = $("<div>", {"class":"wrap_alb", "onmouseleave": "hover_leave()"});
@@ -107,7 +107,7 @@ function add_albums(dat){
             pic_amount = dat[i]["pics"].length
             if(pic_amount >0)
             {
-                alb_pic = dat[i]["pics"][pic_amount-1]["content"][0]
+                alb_pic = dat[i]["pics"][pic_amount-1]["cover"]
             }
             add_window(dat[i]["name"],alb_pic);
         }
@@ -117,7 +117,7 @@ function add_albums(dat){
 function add_pics(dat){
         for (i = 0; i < dat.length; i++) 
         {
-            add_window(dat[i]["work_id"], dat[i]["content"][0],'picture');
+            add_window(dat[i]["work_id"], dat[i]["cover"],'picture');
         }
     
 }
@@ -175,7 +175,6 @@ function modalwindow(typ, head_text, body_text, exec_func, params={}, inp_value=
     $inp.focus();
     $inp.val(inp_value);
     }
-
 }
 
 
@@ -528,7 +527,7 @@ function compare_data(new_data)
                 {
                     if(user_data[i]['pics'].length > 0)
                     {
-                        old[user_data[i]['name']] = user_data[i]['pics'][user_data[i]['pics'].length-1]['content'][0];
+                        old[user_data[i]['name']] = user_data[i]['pics'][user_data[i]['pics'].length-1]['cover'];
                     }
                     else
                     {
@@ -537,7 +536,7 @@ function compare_data(new_data)
 
                     if(new_data[i]['pics'].length > 0)
                     {
-                        nw[new_data[i]['name']] = new_data[i]['pics'][new_data[i]['pics'].length-1]['content'][0];
+                        nw[new_data[i]['name']] = new_data[i]['pics'][new_data[i]['pics'].length-1]['cover'];
                     }
                     else
                     {
