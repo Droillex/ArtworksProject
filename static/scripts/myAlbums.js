@@ -441,7 +441,10 @@ function open_album(name = "")
     else
     {
         if(current_dir == -1)
+        {
+            opening = false;
             return;
+        }
 
 
         let pos = $(".grid-albums").outerWidth();
