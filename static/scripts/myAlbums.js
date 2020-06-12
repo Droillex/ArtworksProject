@@ -295,6 +295,7 @@ function exec_delete(event)
 {
     alb = event.data.alb;
     var $alb_name = $(alb).find(".alb_features").children().first().text();
+    idx = user_data.map(function(e) { return e['name']; }).indexOf($alb_name);
     fetch(`/api/remove_album?name=${$alb_name}`,{method: 'POST', redirect: 'follow'})
         .then(res => res.json())
         .then(data => {
@@ -309,8 +310,8 @@ function exec_delete(event)
         }
         if(data['code'] == 1)
         {
-            alb.parent().remove();
-            idx = user_data.map(function(e) { return e['name']; }).indexOf($alb_name);
+            if(current_dir == -1)
+                alb.parent().remove();
             user_data.splice(idx, 1);
         }
         else
@@ -371,7 +372,8 @@ function exec_add()
         }
         if(data['code'] == 1)
         {
-            add_window(name);
+            if(current_dir == -1)
+                add_window(name);
             user_data.push({'last_updated':'None', 'name':name, 'pics':[]});
         }
         else
@@ -513,98 +515,98 @@ function reset_data()
     add_albums(user_data);
 }
 
-function compare_data(new_data)
-{
-    //something changed
-    if (compare(user_data, new_data) == false)
-    {     
-        //window.alert('Data changed!');
+// function compare_data(new_data)
+// {
+//     //something changed
+//     if (compare(user_data, new_data) == false)
+//     {     
+//         //window.alert('Data changed!');
 
-        // Inside the album
-        if(current_dir != -1)
-        {
-            naming = user_data[current_dir]['name'];
-            idx = new_data.map(function(e) { return e['name']; }).indexOf(naming);
-            if(idx != -1)
-            {
-                if(compare(user_data[current_dir],new_data[idx]) == false)
-                {
-                    //Альбом, в который зашли, изменился
-                    console.log('зашли в альбом, а он изменился!');
-                    current_dir = idx;
-                    $("#renameModal").remove();
-                    $('.wrap_alb').remove();
-                    user_data = new_data;
-                    add_pics(new_data[idx]);
-                }
-                else
-                {
-                    user_data = new_data;
-                    console.log('зашли в альбом, а он не изменился');
-                }
-            }
-            else
-            {
-                user_data = new_data;
-                reset_data();
-                console.log('зашли в альбом, а он был удалён');
-            }
+//         // Inside the album
+//         if(current_dir != -1)
+//         {
+//             naming = user_data[current_dir]['name'];
+//             idx = new_data.map(function(e) { return e['name']; }).indexOf(naming);
+//             if(idx != -1)
+//             {
+//                 if(compare(user_data[current_dir],new_data[idx]) == false)
+//                 {
+//                     //Альбом, в который зашли, изменился
+//                     console.log('зашли в альбом, а он изменился!');
+//                     current_dir = idx;
+//                     $("#renameModal").remove();
+//                     $('.wrap_alb').remove();
+//                     user_data = new_data;
+//                     add_pics(new_data[idx]);
+//                 }
+//                 else
+//                 {
+//                     user_data = new_data;
+//                     console.log('зашли в альбом, а он не изменился');
+//                 }
+//             }
+//             else
+//             {
+//                 user_data = new_data;
+//                 reset_data();
+//                 console.log('зашли в альбом, а он был удалён');
+//             }
 
-        }
+//         }
 
-        // Viewing albums list
-        else
-        {
-            // if length of albums != same
-            if(user_data.length != new_data.length)
-            {
-                user_data = new_data;
-                reset_data();
-                console.log('количество альбомов изменилось');
-            }
-            // if length is equal, write all album names, compare
-            else
-            {
-                old = {};
-                nw = {};
-                for (i = 0; i < user_data.length; i++) 
-                {
-                    if(user_data[i]['pics'].length > 0)
-                    {
-                        old[user_data[i]['name']] = user_data[i]['pics'][user_data[i]['pics'].length-1]['cover'];
-                    }
-                    else
-                    {
-                        old[user_data[i]['name']] = 0;
-                    }
+//         // Viewing albums list
+//         else
+//         {
+//             // if length of albums != same
+//             if(user_data.length != new_data.length)
+//             {
+//                 user_data = new_data;
+//                 reset_data();
+//                 console.log('количество альбомов изменилось');
+//             }
+//             // if length is equal, write all album names, compare
+//             else
+//             {
+//                 old = {};
+//                 nw = {};
+//                 for (i = 0; i < user_data.length; i++) 
+//                 {
+//                     if(user_data[i]['pics'].length > 0)
+//                     {
+//                         old[user_data[i]['name']] = user_data[i]['pics'][user_data[i]['pics'].length-1]['cover'];
+//                     }
+//                     else
+//                     {
+//                         old[user_data[i]['name']] = 0;
+//                     }
 
-                    if(new_data[i]['pics'].length > 0)
-                    {
-                        nw[new_data[i]['name']] = new_data[i]['pics'][new_data[i]['pics'].length-1]['cover'];
-                    }
-                    else
-                    {
-                        nw[new_data[i]['name']] = 0;
-                    }
-                }
+//                     if(new_data[i]['pics'].length > 0)
+//                     {
+//                         nw[new_data[i]['name']] = new_data[i]['pics'][new_data[i]['pics'].length-1]['cover'];
+//                     }
+//                     else
+//                     {
+//                         nw[new_data[i]['name']] = 0;
+//                     }
+//                 }
 
-                if (compare(old,nw) == false)
-                {
-                    console.log('количество не изменилось, но изменилось содержание');
-                    user_data = new_data;
-                    reset_data();
-                }
-                else
-                {
-                    console.log('сами альбомы не изменились, изменилось только содержимое');
-                    user_data = new_data;
-                    //reset_data();
-                }
-            }
+//                 if (compare(old,nw) == false)
+//                 {
+//                     console.log('количество не изменилось, но изменилось содержание');
+//                     user_data = new_data;
+//                     reset_data();
+//                 }
+//                 else
+//                 {
+//                     console.log('сами альбомы не изменились, изменилось только содержимое');
+//                     user_data = new_data;
+//                     //reset_data();
+//                 }
+//             }
 
 
-        }
+//         }
 
-    }
+//     }
 
-}
+// }
