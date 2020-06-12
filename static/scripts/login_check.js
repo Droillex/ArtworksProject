@@ -21,11 +21,10 @@ let login_res;
             else
             {
             	console.log('not logged in');
-            	nms = ['pics/login.png|/login','pics/signup.png|#']
+            	nms = ['pics/login.png|login','pics/signup.png|signup']
             	for (i = 0; i < 2; i++) 
     			{
-    				$btn = $("<a>", {"href":nms[i].split('|')[1]});
-    				$btn.append($("<div>", {"class":"header_item headerButton"}).append($("<img>", {"src":nms[i].split('|')[0], 'class': 'icon'})));
+    				$btn = $("<div>", {"class":"header_item headerButton", "id":nms[i].split('|')[1]}).append($("<img>", {"src":nms[i].split('|')[0], 'class': 'icon'}));
     				$('.header_section').eq(1).append($btn);
     			}
             }

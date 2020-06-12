@@ -81,10 +81,10 @@ header {
     color: #ffffff;
 }
 
-#login:hover {
+/*#login:hover {
     background-color: rgb(89, 148, 46);
     border-radius: 3px;
-}
+}*/
 
 div [class^="item"] {
     /* padding-left: 18%;
@@ -244,18 +244,21 @@ div[class^='albums_']::before {
 }
 
 .grid-albums {
+    align-items:start;
     position: relative;
-    height: 100%;
+    height: inherit;
     display: grid;
     justify-items: center;
     align-items: center;
-    row-gap: 12%;
+    //row-gap: 12%;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    padding: 3%;
+    padding-top: 3%;
 }
 
 main {
-    margin: 50px 0;
+    margin-top: 50px;
+    height: auto;
+    //height: -webkit-fill-available;
     //overflow: hidden;
 }
 
@@ -338,6 +341,7 @@ span.alb_features::before {
 }
 
 .wrap_alb {
+    margin-bottom: 60px;
     width: 20vw;
     height: 15vw;
     display: flex;
@@ -434,7 +438,7 @@ button:hover {
 @media screen and (max-width: 960px) {
     .grid-albums {
         grid-template-columns: 1fr 1fr;
-        row-gap: 8%;
+        //row-gap: 8%;
     }
     .wrap_alb {
         width: 40vw;
@@ -471,7 +475,7 @@ button:hover {
 @media screen and (max-width: 576px) {
     .grid-albums {
         grid-template-columns: 1fr;
-        row-gap: 3%;
+        //row-gap: 3%;
     }
     .wrap_alb {
         width: 80vw;
@@ -738,7 +742,7 @@ option {
 @media screen and (max-width: 960px) {
     .grid-albums {
         grid-template-columns: 1fr 1fr;
-        row-gap: 8%;
+        //row-gap: 8%;
     }
     .wrap_alb {
         width: 40vw;
@@ -818,7 +822,7 @@ option {
 @media screen and (max-width: 576px) {
     .grid-albums {
         grid-template-columns: 1fr;
-        row-gap: 3%;
+        //row-gap: 3%;
     }
     .wrap_alb {
         width: 80vw;

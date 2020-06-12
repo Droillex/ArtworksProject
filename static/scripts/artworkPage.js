@@ -22,7 +22,7 @@ function FillPage(dat)
     for (i = 0; i < dat['content'].length; i++) 
     {
         let $img = $("<div>", {"class": "artwork-data"});
-        $img.append($("<img>", {"src": dat['content'][i]}))
+        $img.append($("<img>", {"loading":"lazy","src": dat['content'][i]}))
         $('.artwork-container').append($img);
     }
     if(login_res['res'] == 0)

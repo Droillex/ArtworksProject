@@ -7,7 +7,6 @@ var current_dir;
 var opening = false;
 
 
-
 fetch(`/api/get_albums`,{method: 'POST'})
         .then(res => res.json())
         .then(data => {
@@ -115,10 +114,12 @@ function add_albums(dat){
 }
 
 function add_pics(dat){
-        for (i = 0; i < dat.length; i++) 
-        {
-            add_window(dat[i]["work_id"], dat[i]["cover"],'picture');
-        }
+    tmp = dat.slice(0);
+    tmp.reverse();
+    for (i = 0; i < tmp.length; i++) 
+    {
+        add_window(tmp[i]["work_id"], tmp[i]["cover"],'picture');
+    }
     
 }
 
@@ -350,6 +351,10 @@ function exec_add()
 
 function open_album(name = "")
 {
+    //console.log(opening);
+    if (opening == true)
+        return;
+    opening = true;
     if(name != "")
     {
         idx = user_data.map(function(e) { return e['name']; }).indexOf(name);
@@ -368,11 +373,13 @@ function open_album(name = "")
                 {
                     add_pics(user_data[current_dir]['pics']);
                 }
+                window.scrollTo(0, 0);
                 //$(".grid-albums").css({ right: -pos });
                 $(".grid-albums").animate({
                 right: `0px`
                 }, 'slow', function() {
                     console.log('finished');
+                    opening = false;
                 });
 
             });
@@ -412,12 +419,14 @@ function open_album(name = "")
             get_user_data();
             $('.wrap_alb').remove();
             current_dir = -1;
-            add_albums(user_data); 
+            add_albums(user_data);
+            window.scrollTo(0, 0); 
             //$(".grid-albums").css({ right: -pos });
             $(".grid-albums").animate({
                 right: `0px`
                 }, 'slow', function() {
                     console.log('finished');
+                    opening = false;
             });
         });
 
