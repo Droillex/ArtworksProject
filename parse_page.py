@@ -37,26 +37,18 @@ def parse_artstation_work(res):
         'author_logo': res['user']['medium_avatar_url'],
         'work_link': res['permalink'],
         'content': [],
-        #'cover': res['cover_url'].replace('medium', 'small')
     }
-    prj = requests.get('https://www.artstation.com/users/{}/projects.json?album_id={}'.format(res['user']['username'],
-                                                                                              res['id']))
-    proj = json.loads(prj.text)
-
-    for item in proj['data']:
-        for k, v in item.items():
-            if k == "hash_id" and v == res['hash_id']:
-                result['cover'] = item['cover']['thumb_url']
-
     for img in res['assets']:
-        if img['asset_type'] != 'video_clip':
+        if img['asset_type'] == 'image':
             result['content'].append(img['image_url'])
+        elif img['asset_type'] == 'cover':
+            result['cover'] = img['image_url'].replace('large', 'smaller_square')
     return result
 
 
 # Parsing single cgsociety work
 def parse_cgsociety_work(res):
-    print(res['data']['attributes'])
+
     result = {
         'title': res['data']['attributes']['title'],
         'description': res['data']['attributes']['description'],

@@ -81,7 +81,6 @@ function handleBlanks(type) {
         case 'add':
             typ = starter % 2;
             for (i = 0; i < clm - 1 + typ; i++) {
-                console.log(i);
                 var $load = $("<div>", { "class": "loading" });
                 var $contain = $("<div>", { "class": "container-l" });
                 var $img = $("<img>", {"class": "image", "src": "pics/no-pic.jpg" });

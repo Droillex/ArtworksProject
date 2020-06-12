@@ -38,7 +38,7 @@ function add_window(name, url='', typ = 'album')
                 break;
 
             case 'picture':
-                $img = $("<img>", {"loading":"lazy","src": alb_pic,"alt":"Album","onclick":`open_pic("")`});
+                $img = $("<img>", {"loading":"lazy","src": alb_pic,"alt":"Album","onclick":`open_pic("${name}")`});
                 break;
             default:
                 break;
@@ -254,6 +254,9 @@ function moving()
 function deleting_pic()
 {
     console.log('Trying to delete picture');  
+    let $pic = $(this).parent();
+    let id = $pic.children().eq(0).children().eq(0).text();
+    modalwindow("delete",`Deleting "${id}"`, "MSG: Are you sure you want to delete this artwork?", exec_delete_artwork, {work_id: id, alb_name: user_data[current_dir]['name'], del: $pic.parent()});
 }
 
 function exec_rename(event)
@@ -319,6 +322,37 @@ function exec_delete(event)
 }
 
 
+function exec_delete_artwork(event)
+{
+    id = event.data.work_id;
+    album_name = event.data.alb_name;
+    for_del = event.data.del;
+    fetch(`/api/remove_art?alb_name=${album_name}&id=${id}`,{method: 'POST'})
+        .then(res => res.json())
+        .then(data => {
+        console.log(data);
+        if(data['code'] == '-100')
+        {
+            redirect_to('login');
+        }
+        else
+        {
+            get_user_data();
+        }
+        if(data['status'] == 1)
+        {
+            for_del.remove();
+            idx = user_data[current_dir]['pics'].map(function(e) { return e['work_id']; }).indexOf(id);
+            user_data[current_dir]['pics'].splice(idx, 1);
+        }
+        else
+        {
+            window.alert(data['message']);
+        }
+        });
+        $('#renameModal').remove();
+}
+
 
 function exec_add()
 {
@@ -358,6 +392,11 @@ function open_album(name = "")
     if(name != "")
     {
         idx = user_data.map(function(e) { return e['name']; }).indexOf(name);
+        if(current_dir == idx)
+        {
+            opening = false;
+            return;
+        }
         if (idx > (-1))
         {
             let pos = $(".grid-albums").outerWidth();
@@ -365,8 +404,8 @@ function open_album(name = "")
                 right: `${pos}px`
             }, 'slow', function() 
             {                
-                $(".header_section").first().append($("<div>", {"class":"directory_path", "onclick": `open_album(${name})`}).append(`\\${name}`));
-                $(".albums_main").first().children().first().after($("<a>", {"class":"dir", "onclick": `open_album(${name})`}).append(`\\${name}`))
+                $(".header_section").first().append($("<div>", {"class":"directory_path", "onclick": `open_album('${name}')`}).append(`\\${name}`));
+                $(".albums_main").first().children().first().after($("<a>", {"class":"dir", "onclick": `open_album('${name}')`}).append(`\\${name}`))
                 current_dir = idx;
                 $('.wrap_alb').remove();
                 for (i = 0; i < user_data[current_dir]['pics'].length; i++)
@@ -402,12 +441,6 @@ function open_album(name = "")
         if(current_dir == -1)
             return;
 
-        // $('.directory_path').remove();
-        // $('.dir').remove();
-        // get_user_data();
-        // $('.wrap_alb').remove();
-        // current_dir = -1;
-        // add_albums(user_data); 
 
         let pos = $(".grid-albums").outerWidth();
         $(".grid-albums").animate({
@@ -435,9 +468,10 @@ function open_album(name = "")
 }
 
 
-function open_pic()
+function open_pic(work_id)
 {
-    console.log('Under construction');
+    var win = window.open(`/artwork?id=${work_id}`, '_blank');
+    win.focus();
 }
 
 function redirect_to(adress)
@@ -454,7 +488,8 @@ function get_user_data()
         .then(data => {
         if(data['code'] == 1)
         {
-            compare_data(data['data']);
+            //compare_data(data['data']);
+            user_data = data['data'];
         }
         else
         {
@@ -483,7 +518,7 @@ function compare_data(new_data)
     //something changed
     if (compare(user_data, new_data) == false)
     {     
-        window.alert('Data changed!');
+        //window.alert('Data changed!');
 
         // Inside the album
         if(current_dir != -1)

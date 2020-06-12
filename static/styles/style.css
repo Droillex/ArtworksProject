@@ -527,6 +527,7 @@ a {
 .artwork-container {
     /* display: flex; */
     color: white;
+    position: relative;
 }
 
 .artwork-data {
