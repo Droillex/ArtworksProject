@@ -30,10 +30,11 @@ function header_buttons(logged)
 			$('.header_section').eq(1).append($btn);
 		}
 		//console.log($('#source').length);
-		if($('#to_alb').length == '1')
+		if($('#unavailable').length == '1')
 		{
-			$("#to_alb").attr('onclick','SaveModal()');
-			$('#to_alb').html('Add to album');
+			$("#unavailable").attr('onclick','SaveModal()');
+			$('#unavailable').html('Add to album');
+			$('#unavailable').attr('id','to_alb');
 		}
 	}
 	else

@@ -270,7 +270,7 @@ function exec_rename(event)
         console.log(data);
         if(data['code'] == '-100')
         {
-            redirect_to('login');
+            redirect_to('');
         }
         else
         {
@@ -302,7 +302,7 @@ function exec_delete(event)
         console.log(data);
         if(data['code'] == '-100')
         {
-            redirect_to('login');
+            redirect_to('');
         }
         else
         {
@@ -334,7 +334,7 @@ function exec_delete_artwork(event)
         console.log(data);
         if(data['code'] == '-100')
         {
-            redirect_to('login');
+            redirect_to('');
         }
         else
         {
@@ -364,7 +364,7 @@ function exec_add()
         console.log(data);
         if(data['code'] == '-100')
         {
-            redirect_to('login');
+            redirect_to('');
         }
         else
         {
@@ -491,6 +491,8 @@ function get_user_data()
     fetch(`/api/get_albums`,{method: 'POST'})
         .then(res => res.json())
         .then(data => {
+        if(data['code'] == '-100')
+            redirect_to('');
         if(data['code'] == 1)
         {
             //compare_data(data['data']);
@@ -498,7 +500,7 @@ function get_user_data()
         }
         else
         {
-            window.alert(data['message']);
+            window.alert(`${data['message']}, code:${data['code']}`);
         }
         });
 }

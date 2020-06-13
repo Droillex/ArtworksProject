@@ -631,6 +631,14 @@ section {
     color: white;
 }
 
+#unavailable
+{
+    padding: 2%;
+    background-color: gray;
+    color: #cccccc;
+    cursor: default;
+}
+
 #source {
     margin: 10px 0;
 }

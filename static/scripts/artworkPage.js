@@ -28,7 +28,7 @@ function FillPage(dat)
     if(login_res['res'] == 0)
     {
         $('#to_alb').html('Login to save artwork');
-        $('#to_alb').attr('id','to_alb');
+        $('#to_alb').attr('id','unavailable');
     }
     else
     {
