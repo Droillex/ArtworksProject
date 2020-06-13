@@ -362,12 +362,11 @@ span.alb_features::before {
     display: block;
     position: fixed;
     z-index: 150;
-    padding-top: 100px;
+    padding-top: 70px;
     left: 0;
-    top: 0;
     margin: 0 auto;
     width: 100%;
-    height: 100%;
+    height: 200%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.6);
 }

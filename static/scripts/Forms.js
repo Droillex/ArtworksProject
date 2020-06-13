@@ -1,5 +1,7 @@
 
 var locked = false;
+scr_value = 0;
+relative_scroll = 20.0;
 
 function modalwindow(formname) {
     let $wdw = $("<div>", { "id": "loginModal", "class": "modal" });
@@ -13,7 +15,7 @@ function modalwindow(formname) {
 
     $modalelem1 = $("<div>", { "class": "form-elem" });
     $modalelem1.append($("<label>", { "for": "password" }).append("Password"));
-    $modalelem1.append($("<input>", {"name": "password", "type":"password", "class": "usr-input", "maxlength": "20", "required": true }));
+    $modalelem1.append($("<input>", {"name": "password", "type":"password", "class": "usr-input", 'id':'pass', "maxlength": "20", "required": true }));
     $modalfooter = $("<div>", { "class": "modal-footer" });
     $exec = $("<button>", { "class": "execute", "type": "submit", "onclick":`${formname.replace(/\s/g, '').toLowerCase()}()`}).append(formname);
     $exit = $("<button>", { "class": "exit" }).append("Cancel");
@@ -23,7 +25,7 @@ function modalwindow(formname) {
     if (formname == "Sign up") {
         $modalelem2 = $("<div>", { "class": "form-elem" });
         $modalelem2.append($("<label>", { "for": "r-password" }).append("Retype password"));
-        $modalelem2.append($("<input>", { "name": "r-password", "type":"password", "class": "usr-input", "maxlength": "20", "required": true }));
+        $modalelem2.append($("<input>", { "name": "r-password", "type":"password", 'id':'re_pass', "class": "usr-input", "maxlength": "20", "required": true }));
         $modalform.append($modalelem, $modalelem1, $modalelem2, $modalfooter);
     } else {
         $modalform.append($modalelem, $modalelem1, $modalfooter);
@@ -31,7 +33,19 @@ function modalwindow(formname) {
 
     $modalcontent.append($modalform);
     $wdw.append($modalcontent);
+    $wdw.css({ top: '0px' });
     $('body').append($wdw);
+    let temp_txt = '';
+    if($('#re_pass').length == 0)
+        temp_txt = '#pass';
+    else
+        temp_txt = '#re_pass';
+
+        $(temp_txt).keyup(function(event) {
+            if (event.keyCode === 13) {
+                $(".execute").click();
+            }
+        });
 
     $exit.click(function() {
         $("div[id$=Modal]").remove();
@@ -39,6 +53,35 @@ function modalwindow(formname) {
 }
 
 
+
+function scr()
+{
+    if($('.modal-content').length == 0)
+    {
+        relative_scroll = 0;
+        return;
+    }
+    new_val = document.documentElement.scrollTop;
+    diff = scr_value-new_val;
+    scr_value = new_val;
+    hght = $('.modal-content').height();
+    let top = (-70 - hght*0.75);
+    modal_top = parseFloat($('.modal').css('top').split('px')[0]);
+    console.log(diff);
+    if(modal_top+diff<top)
+    {
+        $('.modal').css({'top': `${top}px`});
+    }
+    else if(modal_top+diff > 0)
+    {
+        $('.modal').css({'top':'0px'});
+    }
+    else
+    {
+        $('.modal').css({'top':`+=${diff}px`});
+    }
+
+}
 
 function login()
 {
@@ -52,16 +95,16 @@ function login()
         fetch(`/login?nm=${user}&pw=${password}`,{method: 'POST'})
         .then(res => res.json())
         .then(data => {
-        if(data['code'] == 1)
-        {
-            locked = false;
-            header_buttons(true);
-            $("div[id$=Modal]").remove();
-        }
-        else
-        {
-            locked = false;
-            window.alert(data['message']);
+            if(data['code'] == 1)
+            {
+                locked = false;
+                header_buttons(true);
+                $("div[id$=Modal]").remove();
+            }
+            else
+            {
+                locked = false;
+                window.alert(data['message']);
             //failed
         }
     });
@@ -90,16 +133,16 @@ function signup()
         fetch(`/register?nm=${user}&pw=${password}`,{method: 'POST'})
         .then(res => res.json())
         .then(data => {
-        if(data['code'] == 1)
-        {
-            locked = false;
-            header_buttons(true);
-            $("div[id$=Modal]").remove();
-        }
-        else
-        {
-            locked = false;
-            window.alert(data['message']);
+            if(data['code'] == 1)
+            {
+                locked = false;
+                header_buttons(true);
+                $("div[id$=Modal]").remove();
+            }
+            else
+            {
+                locked = false;
+                window.alert(data['message']);
             //failed
         }
     });
