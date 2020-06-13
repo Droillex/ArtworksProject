@@ -65,7 +65,7 @@ function scr()
     diff = scr_value-new_val;
     scr_value = new_val;
     hght = $('.modal-content').height();
-    let top = (-70 - hght*0.75);
+    let top = (-70 - hght*0.6);
     modal_top = parseFloat($('.modal').css('top').split('px')[0]);
     console.log(diff);
     if(modal_top+diff<top)

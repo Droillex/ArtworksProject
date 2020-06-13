@@ -363,6 +363,7 @@ span.alb_features::before {
     position: fixed;
     z-index: 150;
     padding-top: 70px;
+    top: 0px;
     left: 0;
     margin: 0 auto;
     width: 100%;
