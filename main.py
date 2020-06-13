@@ -27,21 +27,30 @@ def main_page():
     return render_template('index.html')
 
 
-@app.route(const.login, methods=["POST", "GET"])
-def login_page():
-    if request.method == "POST":
-        username = request.form['nm']
-        password = request.form['pw']
-        if get_user(username, password) != 0:
-            session.permanent = True
-            session["user"] = username
-            return redirect(url_for("user_page"))
-        else:
-            return render_template('demoLogin.html')
+@app.route(const.login, methods=["POST"])
+def login():
+    username = request.args.get('nm')
+    password = request.args.get('pw')
+    if get_user(username, password) != 0:
+        session.permanent = True
+        session["user"] = username
+        return {'code': '1', 'message': 'success'}
     else:
-        if "user" in session:
-            return redirect(url_for("user_page"))
-        return render_template('demoLogin.html')
+        return {'code': '0', 'message': 'incorrect username or password'}
+
+
+@app.route('/register', methods=["POST"])
+def reg():
+    username = request.args.get('nm')
+    password = request.args.get('pw')
+    code = add_user(username, password)
+    if code == 1:
+        session.permanent = True
+        session["user"] = username
+        return {'code': '1', 'message': 'success'}
+    else:
+        errors = {0: 'User already exist', -1: 'Char limit!', -2: 'Unexpected error'}
+        return {'code': '0', 'message': errors[code]}
 
 
 @app.route(const.user)
@@ -50,7 +59,7 @@ def user_page():
         return render_template('albums.html')
         #return get_user_albums(session['user'])
     else:
-        return redirect(url_for("login_page"))
+        return redirect(url_for("main_page"))
 
 
 @app.route('/logout')

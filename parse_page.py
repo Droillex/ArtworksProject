@@ -37,12 +37,15 @@ def parse_artstation_work(res):
         'author_logo': res['user']['medium_avatar_url'],
         'work_link': res['permalink'],
         'content': [],
+        'cover': res['cover_url'].replace('medium', 'small')
     }
     for img in res['assets']:
         if img['asset_type'] == 'image':
             result['content'].append(img['image_url'])
         elif img['asset_type'] == 'cover':
-            result['cover'] = img['image_url'].replace('large', 'smaller_square')
+            tst = requests.get(img['image_url'].replace('large', 'smaller_square'))
+            if tst.status_code == 200:
+                result['cover'] = img['image_url'].replace('large', 'smaller_square')
     return result
 
 
@@ -121,6 +124,7 @@ def cgsociety_collect(btm=1, top=180, json_url='', pages=0, op=''):
             # If error while collecting json
 
     return ct
+
 
 # Returns part of JSON file
 def read_json_part(path, start=0, end=0):

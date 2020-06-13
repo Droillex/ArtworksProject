@@ -145,7 +145,7 @@ function modalwindow(typ, head_text, body_text, exec_func, params={}, inp_value=
     if(typ == "input")
     {
         $modalbody.append($("<label>", {"for":"inp"}).append(`>${body_text}`));
-        $inp = $("<input>", {"type":"text", "value":"", "id":"inp", "maxlength":"30"});
+        $inp = $("<input>", {"autocomplete":"off","type":"text", "value":"", "id":"inp", "maxlength":"30"});
         $modalbody.append($inp);
     }
     else

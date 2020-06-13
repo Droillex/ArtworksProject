@@ -28,11 +28,12 @@ function FillPage(dat)
     if(login_res['res'] == 0)
     {
         $('#to_alb').html('Login to save artwork');
-        $('#to_alb').attr('id','source');
+        $('#to_alb').attr('id','to_alb');
     }
     else
     {
-         $("#to_alb").click(SaveModal);
+        $("#to_alb").attr('onclick','SaveModal()');
+         //$("#to_alb").click();
     }
 }
 
