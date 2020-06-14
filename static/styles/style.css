@@ -44,6 +44,7 @@ header {
     padding: 5px 15px;
     font-size: 20px;
     color: #a2a2a2;
+    cursor: pointer;
 }
 
 .header_item a:hover {
@@ -400,6 +401,7 @@ span.alb_features::before {
     -o-object-fit: cover;
        object-fit: cover;
     position: relative;
+    cursor: pointer;
 }
 
 .modal {
@@ -985,6 +987,9 @@ span.underscore
     #loginModal .modal-content,
     #regModal .modal-content {
         width: 85%;
+    }
+    .headerLogo {
+        font-size: 25px;
     }
 }
 
