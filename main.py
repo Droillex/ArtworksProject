@@ -57,14 +57,12 @@ def reg():
 def user_page():
     if "user" in session:
         return render_template('albums.html')
-        #return get_user_albums(session['user'])
     else:
         return redirect(url_for("main_page"))
 
 
 @app.route('/logout')
 def logout():
-    print(request.referrer)
     session.pop("user", None)
     return redirect(request.referrer)
 
@@ -94,7 +92,6 @@ def get_cells():
         count = [int(x) for x in request.args.get('cnt').split(',')]
     except Exception as ex:
         print(ex)
-        #Redirect 404
         return ""
 
     if st % 2 == 0:
@@ -105,10 +102,6 @@ def get_cells():
         odd_rows = math.ceil(rows / 2)
         odd_count = columns * odd_rows
         even_count = (columns - 1) * (rows - odd_rows)
-
-    # print('add odds; indexes from {} to {}'.format(start_point_odd, start_point_odd+odd_count))
-    # print('add evens; indexes from {} to {}'.format(start_point_even, start_point_even+even_count))
-
     result = [
         read_json_part('static/index/CGtrending.json', start=count[0], end=count[0] + even_count),
         read_json_part('static/index/AStrending.json', start=count[1], end=count[1] + odd_count)]
@@ -188,6 +181,7 @@ def alb_lst():
     else:
         return {'data':[], 'status': '0'}
 
+
 @app.route('/api/add_art', methods=["POST"])
 def add_artwork():
     work_id = request.args.get('id')
@@ -218,11 +212,6 @@ def remove_artwork():
         return jsonify({"code": "0", "message": "There are no user in session"})
 
 
-
-
-
-
-
 # Creating background task to regularly update picture index
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=get_rating, trigger="interval", minutes=const.idx_refresh_minutes)
@@ -231,6 +220,6 @@ scheduler.start()
 # Removing this task at exit
 atexit.register(lambda: scheduler.shutdown())
 
-#get_rating()
+# get_rating()
 
-#app.run()
+# app.run()

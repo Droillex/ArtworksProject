@@ -53,7 +53,6 @@ function add_window(name, url='', typ = 'album')
     let $new_alb = $("<div>", {"class":"wrap_alb", "onmouseleave": "hover_leave()"});
     $albname = $("<div>", {"class": "alb_name"});
     $albname.append($("<span>",{"class":"alb_features"}).append(`<span>${name}</span><span class="underscore">_</span>`));
-    //setTimeout(typeWriter, 200, $albname.children().eq(0).children().eq(0), name, 70);
     $sett = $("<div>", {"class":"settings"});
 
     $sett.hover(function() 
@@ -73,16 +72,20 @@ function add_window(name, url='', typ = 'album')
     {
         case 'album':
             $ren = $("<div>", {"class":"rename"});
-            $ren.click(renaming);
-            $albname.append($ren.append($("<i>", {"class":"fas fa-pencil-alt fa-3x"})));
-            $del.click(deleting);
+            //$ren.click(renaming);
+            let $img = $("<img>", {"src":"pics/edit.png", "id":"edit-icon"});
+            $img.click(renaming);
+            $albname.append($ren.append($img));
+        $del.append($("<img>", {"src":"pics/delete.png", 'id':'edit-icon'}));
+        $del.children().eq(0).click(deleting);
             break;
 
         case 'picture':
             $mov = $("<div>", {"class":"rename"});
             $mov.click(moving);
-            $albname.append($mov.append($("<i>", {"class":"fas fa-arrow-left fa-3x"})));
-            $del.click(deleting_pic);
+            $albname.append($mov.append($("<img>", {"src":"pics/move.png", "id":"edit-icon"})));
+            $del.append($("<img>", {"src":"pics/delete.png", 'id':'edit-icon'}));
+            $del.children().eq(0).click(deleting_pic);
             break;
         default:
             break;
@@ -90,7 +93,7 @@ function add_window(name, url='', typ = 'album')
 
 
 
-    $albname.append($del.append($("<i>", {"class":"far fa-trash-alt fa-3x"})));
+    $albname.append($del);
     $new_alb.append($albname);
     $new_alb.append($img);
     $('.grid-albums').append($new_alb);
@@ -99,7 +102,6 @@ function add_window(name, url='', typ = 'album')
 
 function add_albums(dat){
 
-        //console.log(dat);
         for (i = 0; i < dat.length; i++) 
         {
             let alb_pic = "";
@@ -130,7 +132,6 @@ function add_pics(dat){
 function hover_leave()
 {
     $($settings).css({'height':'22.5px'});
-    //,'display':'block'
     $($settings).find(".rename, .delete").css({'opacity': '0','pointer-events':'none'})
     $($settings).children().eq(1).children().first().css({'opacity':1});
 }
@@ -178,23 +179,6 @@ function modalwindow(typ, head_text, body_text, exec_func, params={}, inp_value=
     }
 }
 
-
-//Вариант с кликом на иконку настроеку
-// $(".settings").click(function() {
-//     var $cont = $(this).parent();
-//     if ($flag_2 == true) {
-//         $($cont).css({ 'height': 'inherit' });
-//         $($cont).find(".rename, .delete").css({ 'opacity': '1' });
-//         $flag_2 = false;
-
-//     } else {
-
-//         $($cont).css({ 'height': '22.5px' });
-//         $($cont).find(".rename, .delete").css({ 'opacity': '0' });
-//         $flag_2 = true;
-//     }
-// });
-
 //Показ полного имени альбома
 $(".albums_main").click(function() {
     if ($flag_1 == true) {
@@ -222,7 +206,7 @@ $(".albums_main").click(function() {
 //Изменение имени альбома
 function renaming()
 {
-    var $album = $(this).parent();
+    var $album = $(this).parent().parent();
     var $alb_name = $($album).find(".alb_features").children().first().text();
     modalwindow("input",`Renaming "${$alb_name}"`, "rename", exec_rename, {alb: $album}, $alb_name);
 }
@@ -233,7 +217,7 @@ function renaming()
 //Удаление альбома
 function deleting()
 {   
-    var $album = $(this).parent();
+    var $album = $(this).parent().parent();
     var $alb_name = $($album).find(".alb_features").children().first().text();
     modalwindow("delete",`Deleting "${$alb_name}"`, "MSG: Are you sure you want to delete this album?", exec_delete, {alb: $album});
 }
@@ -248,13 +232,12 @@ function adding()
 
 function moving()
 {
-    console.log('Trying to move picture');
+    window.alert("This feature not available yet");
 }
 
 function deleting_pic()
 {
-    console.log('Trying to delete picture');  
-    let $pic = $(this).parent();
+    let $pic = $(this).parent().parent();
     let id = $pic.children().eq(0).children().eq(0).text();
     modalwindow("delete",`Deleting "${id}"`, "MSG: Are you sure you want to delete this artwork?", exec_delete_artwork, {work_id: id, alb_name: user_data[current_dir]['name'], del: $pic.parent()});
 }
@@ -267,7 +250,6 @@ function exec_rename(event)
     fetch(`/api/rename_album?name=${$alb_name}&new_name=${$new_name}`,{method: 'POST', redirect: 'follow'})
     .then(res => res.json())
     .then(data => {
-        console.log(data);
         if(data['code'] == '-100')
         {
             redirect_to('');
@@ -299,7 +281,6 @@ function exec_delete(event)
     fetch(`/api/remove_album?name=${$alb_name}`,{method: 'POST', redirect: 'follow'})
         .then(res => res.json())
         .then(data => {
-        console.log(data);
         if(data['code'] == '-100')
         {
             redirect_to('');
@@ -331,7 +312,6 @@ function exec_delete_artwork(event)
     fetch(`/api/remove_art?alb_name=${album_name}&id=${id}`,{method: 'POST'})
         .then(res => res.json())
         .then(data => {
-        console.log(data);
         if(data['code'] == '-100')
         {
             redirect_to('');
@@ -361,7 +341,6 @@ function exec_add()
     fetch(`/api/add_album?name=${name}`,{method: 'POST', redirect: 'follow'})
         .then(res => res.json())
         .then(data => {
-        console.log(data);
         if(data['code'] == '-100')
         {
             redirect_to('');
@@ -387,7 +366,6 @@ function exec_add()
 
 function open_album(name = "")
 {
-    //console.log(opening);
     if (opening == true)
         return;
     opening = true;
@@ -419,23 +397,10 @@ function open_album(name = "")
                 $(".grid-albums").animate({
                 right: `0px`
                 }, 'slow', function() {
-                    console.log('finished');
                     opening = false;
                 });
 
             });
-
-            // directory_path
-            // $(".header_section").first().append($("<div>", {"class":"directory_path", "onclick": `open_album(${name})`}).append(`\\${name}`));
-            // $(".albums_main").first().append($("<a>", {"class":"dir", "onclick": `open_album(${name})`}).append(`\\${name}`))
-            // current_dir = idx;
-            // $('.wrap_alb').remove();
-
-            // for (i = 0; i < user_data[current_dir]['pics'].length; i++)
-            // {
-            //     //add_window(user_data[current_dir]['pics'][i]['work_id'], user_data[current_dir]['pics'][i]['content'][0],'picture');
-            //     add_pics(user_data[current_dir]['pics']);
-            // }
         }
     }
     else
@@ -459,11 +424,9 @@ function open_album(name = "")
             current_dir = -1;
             add_albums(user_data);
             window.scrollTo(0, 0); 
-            //$(".grid-albums").css({ right: -pos });
             $(".grid-albums").animate({
                 right: `0px`
                 }, 'slow', function() {
-                    console.log('finished');
                     opening = false;
             });
         });
@@ -520,98 +483,3 @@ function reset_data()
     add_albums(user_data);
 }
 
-// function compare_data(new_data)
-// {
-//     //something changed
-//     if (compare(user_data, new_data) == false)
-//     {     
-//         //window.alert('Data changed!');
-
-//         // Inside the album
-//         if(current_dir != -1)
-//         {
-//             naming = user_data[current_dir]['name'];
-//             idx = new_data.map(function(e) { return e['name']; }).indexOf(naming);
-//             if(idx != -1)
-//             {
-//                 if(compare(user_data[current_dir],new_data[idx]) == false)
-//                 {
-//                     //Альбом, в который зашли, изменился
-//                     console.log('зашли в альбом, а он изменился!');
-//                     current_dir = idx;
-//                     $("#renameModal").remove();
-//                     $('.wrap_alb').remove();
-//                     user_data = new_data;
-//                     add_pics(new_data[idx]);
-//                 }
-//                 else
-//                 {
-//                     user_data = new_data;
-//                     console.log('зашли в альбом, а он не изменился');
-//                 }
-//             }
-//             else
-//             {
-//                 user_data = new_data;
-//                 reset_data();
-//                 console.log('зашли в альбом, а он был удалён');
-//             }
-
-//         }
-
-//         // Viewing albums list
-//         else
-//         {
-//             // if length of albums != same
-//             if(user_data.length != new_data.length)
-//             {
-//                 user_data = new_data;
-//                 reset_data();
-//                 console.log('количество альбомов изменилось');
-//             }
-//             // if length is equal, write all album names, compare
-//             else
-//             {
-//                 old = {};
-//                 nw = {};
-//                 for (i = 0; i < user_data.length; i++) 
-//                 {
-//                     if(user_data[i]['pics'].length > 0)
-//                     {
-//                         old[user_data[i]['name']] = user_data[i]['pics'][user_data[i]['pics'].length-1]['cover'];
-//                     }
-//                     else
-//                     {
-//                         old[user_data[i]['name']] = 0;
-//                     }
-
-//                     if(new_data[i]['pics'].length > 0)
-//                     {
-//                         nw[new_data[i]['name']] = new_data[i]['pics'][new_data[i]['pics'].length-1]['cover'];
-//                     }
-//                     else
-//                     {
-//                         nw[new_data[i]['name']] = 0;
-//                     }
-//                 }
-
-//                 if (compare(old,nw) == false)
-//                 {
-//                     console.log('количество не изменилось, но изменилось содержание');
-//                     user_data = new_data;
-//                     reset_data();
-//                 }
-//                 else
-//                 {
-//                     console.log('сами альбомы не изменились, изменилось только содержимое');
-//                     user_data = new_data;
-//                     //reset_data();
-//                 }
-//             }
-
-
-//         }
-
-//     }
-
-// }

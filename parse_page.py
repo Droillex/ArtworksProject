@@ -4,6 +4,7 @@ import datetime
 import math
 import time
 
+
 # Rounding function
 def rounder(value):
     frac, whole = math.modf(value)
@@ -11,19 +12,6 @@ def rounder(value):
         return int(whole+1)
     else:
         return int(whole)
-
-
-# def posted_ago(value):
-#     calc = rounder(value / 3600)
-#     if calc > 0:
-#         return calc, 'hours'
-#     else:
-#         calc = rounder(value / 60)
-#         if calc > 0:
-#             return calc, 'minutes'
-#         else:
-#             return value, 'seconds'
-
 
 
 # Parsing single artstation work
@@ -121,8 +109,6 @@ def cgsociety_collect(btm=1, top=180, json_url='', pages=0, op=''):
                     break
         else:
             pass
-            # If error while collecting json
-
     return ct
 
 
@@ -162,7 +148,6 @@ def handle_artwork(artwork_id):
             return {"work_id": "error"}
 
 
-
 def check_route(artwork_id):
     if len(artwork_id) == 4:
         r = requests.get('https://cgsociety.org/api/images/{}?user_details=true'.format(artwork_id))
@@ -178,10 +163,9 @@ def check_route(artwork_id):
 def parse_artwork(json_url):
     site = json_url[8:].split('/')[0]
 
-    url = json_url
     r = requests.get(json_url)
 
-    if(r.status_code == 200):
+    if r.status_code == 200:
         res = json.loads(r.text)
         funcs = {
             'artstation.com': parse_artstation_work,
@@ -189,8 +173,6 @@ def parse_artwork(json_url):
         }
         return funcs[site](res)
 
-    else:
-        print("failed")
 
 
 #For parsing pages with multiple artworks
@@ -231,12 +213,6 @@ def parse_page(json_url, rng=1):
                     dat = datetime.datetime(date_info['year'], date_info['month'], date_info['day'], date_info['hour'],
                                             date_info['minute'])
                     counter[dat.date()] = counter.get(dat.date(), 0) + 1
-
-                    # diff = (datetime.datetime.utcnow() + datetime.timedelta(hours=-5)) - dat
-                    # if rounder(diff.total_seconds()/3600) > 0:
-                    #    val = rounder(diff.total_seconds()/3600)
-                    #    avg = res['data'][i]['likes_count']/val
-                    # print("Средние лайки за час: {}, часов назад: {}".format(avg, val))
                     try:
                         urls.append({'img_url': res['data'][i]['cover']['small_square_url'],
                                  'title': res['data'][i]['title'],
@@ -254,17 +230,11 @@ def parse_page(json_url, rng=1):
                 # If error
 
 
-        #sorted_urls = sorted(urls, key=lambda k: k['avg_likes'], reverse=True)
-        #new_list = [{k: v for k, v in d.items() if k != 'avg_likes'} for d in sorted_urls]
-    #print(counter)
-
-    #print(len(urls))
 
     return urls
 
 # Creating local index by writing JSON files
 def get_rating():
-    start = time.time()
     cgs_urls = parse_page('https://cgsociety.org/api/channels/recent/images?category=&channel_slug=recent&genre'
                           '=&per_page=20')
     with open('static/index/CGtrending.json', 'w') as fp:
@@ -272,17 +242,6 @@ def get_rating():
     as_urls = parse_page('https://artstation.com/projects?sorting=trending', rng=40)
     with open('static/index/AStrending.json', 'w') as fp:
         json.dump(as_urls, fp)
-    end = time.time()
-    #print(end-start)
-    #print("-----------------FINISHED------------------")
 
 
 
-
-#parseArtwork('https://artstation.com/projects/6arYQw.json')
-#parse_page('https://artstation.com/projects?sorting=trending')
-#parse_page('https://cgsociety.org/api/channels/recent/images?category=&channel_slug=recent&genre=&per_page=20')
-#print(parseArtwork('https://cgsociety.org/api/images/r80t?user_details=false'))
-#print(datetime.datetime.utcnow() + datetime.timedelta(hours=-4))
-#parse_page('https://cgsociety.org/api/channels/featured/images?category=&channel_slug=featured&genre=&per_page=20', 20)
-#get_rating()

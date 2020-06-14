@@ -21,15 +21,13 @@ function header_buttons(logged)
 	if(logged)
 	{
 		$('.header_section').eq(1).empty();
-		nms = ['fas fa-images|/albums','fas fa-cog|#','fas fa-door-open|/logout']
+		nms = ['pics/albums.png|/albums|albums','pics/settings.png|#|settings','pics/logout.png|/logout|exit']
 		for (i = 0; i < 3; i++) 
 		{
 			$btn = $("<a>", {"href":nms[i].split('|')[1]});
-			$btn.append($("<div>", {"class":"header_item headerButton"}).append($("<i>", {"class":nms[i].split('|')[0]})));
-			console.log($btn)
+			$btn.append($("<div>", {"class":"header_item headerButton","id":nms[i].split('|')[2]}).append($("<img>", {"src":nms[i].split('|')[0], "class":"icon"})));
 			$('.header_section').eq(1).append($btn);
 		}
-		//console.log($('#source').length);
 		if($('#unavailable').length == '1')
 		{
 			$("#unavailable").attr('onclick','SaveModal()');

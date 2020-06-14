@@ -32,7 +32,6 @@ function setColumnStyles() {
     $("style").remove();
     $('head').append($('<style type="text/css"></style>'));
     $('style').append(`.grid{\ndisplay: grid;\ngrid-template-columns: repeat(${clm*2}, ${25/clm}%);\njustify-items: center;\nalign-items: center;\ncolumn-gap:${50/(clm*2-1)}%;\n}`);
-    //column-gap: 36%;\n
     $('style').append(`.img_wrap{\nwidth:${wdth}vw;\nheight:${wdth}vw;\n}`);
     for (i = 0; i < clm; i++) {
         let nm = `column${i+1}odd`;
@@ -49,7 +48,6 @@ function setColumnStyles() {
 //Using json data sets all cels
 function setCells(dat, rows, st) {
     var pics = dat['data'];
-    //console.log(pics.length);
     let idxs = [0,0]
     for (i = st - 1; i < st - 1 + rows; i++) {
         let nm = `row${i+1}`;
@@ -96,7 +94,7 @@ function handleBlanks(type) {
             break;
 
         default:
-            console.log('default hit')
+            console.log('never gonna happen')
             break;
     }
 
@@ -124,7 +122,6 @@ function defineRes()
 
 function redefineCells()
 {
-    //console.log('Current orientation is ' + screen.orientation.type);
     defineRes();
     let $list = $(".item").toArray();
     let frac = Math.floor($list.length / (2*clm-1));

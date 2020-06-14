@@ -49,7 +49,6 @@ function addmodal(typ, head_text, body_text, exec_func, params={}, add_to ,inp_v
     $modalfooter.append($exit.append("Cancel"))
     $modalcontent.append($modalfooter);
     $wdw.append($modalcontent);
-    //$wdw.css({ 'display': 'block'});
     add_to.append($wdw);
     if(typ == "input")
     {

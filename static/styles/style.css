@@ -68,7 +68,6 @@ header {
 
 .headerButton:hover {
     background-color: rgb(0, 0, 0);
-    border-radius: 3px;
 }
 
 .headerButton:hover a {
@@ -308,7 +307,7 @@ main {
     -o-transition: opacity 0.2s ease-in-out;
     transition: opacity 0.2s ease-in-out;
     -ms-grid-column-align: center;
-        justify-self: center;
+    justify-self: center;
     pointer-events: none;
 }
 
@@ -500,7 +499,21 @@ a {
 .icon {
     width: 30px;
     height: auto;
+    vertical-align: middle;
 }
+
+#edit-icon {
+    width: 55px;
+    height: auto;
+    vertical-align: middle;
+    filter: brightness(10);
+}
+
+#edit-icon:hover {
+    filter: none;
+}
+
+
 
 
 /*artwork*/
@@ -786,6 +799,33 @@ option {
 
 /* extra crispy*/
 
+#settings
+{
+    filter: grayscale(10);
+}
+
+
+#exit:hover
+{
+    background-color: #73392e;
+}
+#exit:hover img
+{
+    filter: brightness(2);
+}
+
+#plus:hover, 
+#login:hover,
+#albums:hover, 
+#signup:hover
+{
+    background-color: #94b2b9;
+}
+#plus:hover img, #login:hover img, #albums:hover img, #signup:hover img
+{
+    filter: brightness(10);
+}
+
 span.underscore
 {
     color: #94b2b9;
@@ -947,3 +987,5 @@ span.underscore
         width: 85%;
     }
 }
+
+

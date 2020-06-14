@@ -33,7 +33,6 @@ function FillPage(dat)
     else
     {
         $("#to_alb").attr('onclick','SaveModal()');
-         //$("#to_alb").click();
     }
 }
 
@@ -144,7 +143,6 @@ function Blank()
 
 function cr_alb()
 {
-    console.log('Create_album!');
     var name = $("#renameModal").find("#inp").val();
     proc = true;
     Blank();
@@ -152,7 +150,6 @@ function cr_alb()
     fetch(`/api/add_album?name=${name}`,{method: 'POST'})
         .then(res => res.json())
         .then(data => {
-        console.log(data);
         if(data['code'] == '-100')
         {
             document.location.reload(true);
